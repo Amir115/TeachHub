@@ -51,7 +51,7 @@ export const getRoute = (location: Location) => routes
     .find(x => x.path === location.pathname.substring(1) ||
                x.subRoutes?.filter(isBasicRoute).some(y => `${x.path}/${y.path}` === location.pathname.substring(1)));
 
-const getBasicRouteProps = ({Component, path}: BasicRoute, routeKey: Key) => ({key: routeKey, path, element: <Component />})
+const getBasicRouteProps = ({Component, path}: BasicRoute, routeKey: Key) => ({key: routeKey, path, element: <Component/>})
 const renderIndexRoute = ({Component}: IndexRoute, routeKey: Key) => <ReactRoute index key={routeKey} element={<Component />} />
 
 const renderSubRoute = (subRoute: Route, subRouteKey: Key) => isBasicRoute(subRoute)
