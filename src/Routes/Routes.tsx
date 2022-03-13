@@ -10,12 +10,13 @@ import Home from "./Home";
 import Auth, {Login, SignUp} from './Auth';
 
 import TeachHub from "../TeachHub";
+import Lecture from './Lecture';
 
 export interface BasicRoute {
     Component: () => JSX.Element
     name: string,
     path: string,
-    Icon: React.ReactNode
+    Icon?: React.ReactNode
     subRoutes?: Route[],
     isIndex?: false,
     showInDrawer?: boolean
@@ -41,7 +42,9 @@ export const routes: Route[] = [
             {isIndex: true, Component: Login},
             {name: 'Sign Up', path: 'signup', Component: SignUp, Icon: <PersonIcon />},   
         ]
-    }
+    },
+
+    {name: 'Lecture', path: 'lectures/:id', Component: Lecture, showInDrawer: false}
 ];
 
 export const isBasicRoute = (route: Route): route is BasicRoute => !route.isIndex;

@@ -18,6 +18,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 import { CenteredColumn } from "../../theme/layout";
 import { LecturePreview, Person } from "../../types";
+import { useNavigate } from 'react-router-dom';
 
 const lecturer: Person = { firstName: "Moshe", lastName: "Haim" };
 
@@ -89,6 +90,7 @@ const lecturesPreview: LecturePreview[] = [
 ];
 
 const Home = () => {
+  const navigate = useNavigate();
   const [lectures, setLectures] = useState<LecturePreview[]>([] as LecturePreview[]);
 
   useEffect(() => {
@@ -105,6 +107,8 @@ const Home = () => {
           <Grid key={lecture.id} item xs={3}>
             <Card>
               <CardHeader
+                sx={{cursor: 'pointer'}}
+                onClick={() => navigate(`lectures/${lecture.id}`)}
                 avatar={
                   <Avatar>{lecture.topic.slice(0, 1).toUpperCase()}</Avatar>
                 }

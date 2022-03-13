@@ -1,7 +1,16 @@
 import {ReactNode} from "react";
 import {createTheme, ThemeProvider as MuiThemeProvider} from "@mui/material/styles";
 
-export const theme = createTheme();
+export const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#000000',
+        },
+        secondary: {
+            main: '#61b6cd'
+        },
+    },
+});
 
 interface ThemeProviderProps {
     children: ReactNode;
