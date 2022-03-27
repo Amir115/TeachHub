@@ -1,36 +1,39 @@
 import moment from 'moment'
 import { useParams } from 'react-router-dom';
-import { Row } from '../../theme/layout';
+import {Column, Row} from '../../theme/layout';
 import { Button, Card, CardContent, CardHeader, Chip, Stack, Typography } from '@mui/material';
+import lectures from "../../server-mocks/lectures";
+import CardMedia from "@mui/material/CardMedia";
+import TimerIcon from '@mui/icons-material/Timer';
+import React from "react";
 
 const Lecture = () => {
-  const id = useParams();
+  const {id} = useParams();
 
-  // TODO: fetch lecture
-  const lecture = {
-    id: 1,
-    name: 'History Of Sushi',
-    topic: 'sushi',
-    lecturer: { id: 2, name: 'Tal Mikey' },
-    information: 'Sushi (すし, 寿司, 鮨, 鮓, pronounced [sɯɕiꜜ] or [sɯꜜɕi]) is a traditional Japanese dish of prepared vinegared rice (鮨飯, sushi-meshi), usually with some sugar and salt, accompanied by a variety of ingredients (ねた, neta), such as seafood, often raw, and vegetables. Styles of sushi and its presentation vary widely, but the one key ingredient is "sushi rice", also referred to as shari (しゃり), or sumeshi (酢飯).[1]',
-    date: new Date(),
-    duration: '1h',
-    cost: '40$',
-  }
+  // TODO: fetch from server
+  const lecture = lectures.find(x => x.id.toString() === id);
 
   return <Stack spacing={1}>
     <Typography variant='h4'>{lecture.name}</Typography>
-    <Typography variant='subtitle1'>{lecture.lecturer.name}</Typography>
+    <Typography variant='subtitle1'>{`${lecture.lecturer.firstName} ${lecture.lecturer.lastName}`}</Typography>
     <Card sx={{ p: 2 }}>
-      <Row sx={{ justifyContent: 'space-between' }}>
-        <CardHeader title={`${moment(lecture.date).format('DD MMM yyyy | HH:mm')} | ${lecture.duration}`} />
-        <Chip label={lecture.cost} color='secondary' />
-      </Row>
-      <CardContent>
-        <Typography variant='body1'>{lecture.information}</Typography>
-      </CardContent>
-      <Row sx={{justifyContent: 'flex-end'}}>
-        <Button variant='contained' color='secondary'>Subscribe Now</Button>
+      <Row >
+        <Column flex={1} sx={{overflow: 'hidden'}}>
+          <img src="/static/images/lecture.jpg" />
+        </Column>
+        <Column flex={3}>
+          <Row sx={{ justifyContent: 'space-between' }}>
+            <CardHeader title={`${moment(lecture.date).format('DD MMM yyyy | HH:mm')} | ${lecture.duration}`} />
+            <Chip label={`${lecture.cost}$`} color='secondary'
+                  sx={{borderRadius: 0, position: 'relative', right: '-16px', fontSize: 16, fontWeight: 'bold'}}/>
+          </Row>
+          <CardContent sx={{flex:1}}>
+            <Typography variant='body1'>{lecture.information}</Typography>
+          </CardContent>
+          <Row sx={{justifyContent: 'flex-end'}}>
+            <Button variant='contained' color='secondary'>Subscribe Now</Button>
+          </Row>
+        </Column>
       </Row>
     </Card>
   </Stack>

@@ -8,11 +8,14 @@ import IconButton from '@mui/material/IconButton';
 
 import MenuIcon from '@mui/icons-material/Menu';
 
+import icon from './icon.png';
+
 import useAuth from './hooks/auth/use-auth';
 import { getRoute } from './Routes/Routes';
 import { ManagementSystemDrawer } from './Routes/NavigationDrawer';
 import { Column } from "./theme/layout";
 import { ThemeProvider } from "./theme/theme";
+import {Box} from "@mui/material";
 
 const TeachHub = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -33,12 +36,15 @@ const TeachHub = () => {
         <ThemeProvider>
             <CssBaseline/>
             <AppBar position='relative'>
-                <Toolbar>
+                <Toolbar sx={{alignItems:'baseline', padding: 1}}>
                     {userSession && <IconButton color="inherit" onClick={() => setIsDrawerOpen(x => !x)} edge="start">
                         <MenuIcon/>
                     </IconButton>}
+                    <Box sx={{display: 'flex', cursor: 'pointer'}}>
+                        <img height="50" src={icon} alt='icon' onClick={() => navigate('/')}/>
+                    </Box>
                     <Typography variant="h6" color="inherit" noWrap>
-                        TeachHub {Bread}
+                        {Bread}
                     </Typography>
                 </Toolbar>
             </AppBar>
