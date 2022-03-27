@@ -1,14 +1,13 @@
 import moment from 'moment'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {Column, Row} from '../../theme/layout';
 import { Button, Card, CardContent, CardHeader, Chip, Stack, Typography } from '@mui/material';
 import lectures from "../../server-mocks/lectures";
-import CardMedia from "@mui/material/CardMedia";
-import TimerIcon from '@mui/icons-material/Timer';
 import React from "react";
 
 const Lecture = () => {
   const {id} = useParams();
+  const navigate = useNavigate();
 
   // TODO: fetch from server
   const lecture = lectures.find(x => x.id.toString() === id);
@@ -31,7 +30,7 @@ const Lecture = () => {
             <Typography variant='body1'>{lecture.information}</Typography>
           </CardContent>
           <Row sx={{justifyContent: 'flex-end'}}>
-            <Button variant='contained' color='secondary'>Subscribe Now</Button>
+            <Button variant='contained' color='secondary' onClick={() => navigate(`subscribe`)}>Subscribe Now</Button>
           </Row>
         </Column>
       </Row>
