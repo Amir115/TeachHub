@@ -9,5 +9,6 @@ export interface LecturePreview {
   duration: string;
   date: Date;
   cost: number;
-  tags: [string]
+  tags: [string];
+  image: string;
 }

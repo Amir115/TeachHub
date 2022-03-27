@@ -4,12 +4,12 @@ import {createTheme, ThemeProvider as MuiThemeProvider} from "@mui/material/styl
 export const theme = createTheme({
     palette: {
         primary: {
-            main: '#000000',
+            main: '#2b2b2b',
         },
         secondary: {
             main: '#61b6cd'
-        },
-    },
+        }
+    }
 });
 
 interface ThemeProviderProps {

@@ -39,7 +39,7 @@ export const LectureCard: FC<LectureCardProps> = ({lecture}) => {
         <CardMedia
             component="img"
             sx={{height: '40%'}}
-            image={`/static/images/lecture${photoId}.jpg`}
+            image={lecture.image}
         />
         <CardContent>
             <Typography variant="body2" color="text.secondary">
