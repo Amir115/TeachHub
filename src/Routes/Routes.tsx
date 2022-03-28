@@ -12,6 +12,7 @@ import Auth, { Login, SignUp } from './Auth';
 import TeachHub from '../TeachHub';
 import Lecture from './Lecture';
 import Subscribe from './Subscribe';
+import Profile from './Profile';
 import AppProviders from '../providers';
 
 export interface BasicRoute {
@@ -51,6 +52,8 @@ export const routes: Route[] = [
         Component: Subscribe,
         showInDrawer: false,
     },
+    {name: 'Lecture', path: 'lectures/:id', Component: Lecture, showInDrawer: false},
+    {name: 'Profile', path: 'profile', Component: Profile, showInDrawer: false}
 ];
 
 export const isBasicRoute = (route: Route): route is BasicRoute => !route.isIndex;

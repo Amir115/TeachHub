@@ -1,5 +1,5 @@
-import {useState, useEffect} from "react";
-import {useNavigate, Outlet, useLocation} from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,52 +13,57 @@ import icon from './icon.png';
 import useAuth from './hooks/auth/use-auth';
 import { getRoute } from './Routes/Routes';
 import { ManagementSystemDrawer } from './Routes/NavigationDrawer';
-import { Column } from "./theme/layout";
+import { Column, Row } from "./theme/layout";
 import { ThemeProvider } from "./theme/theme";
-import {Box} from "@mui/material";
+import { Box, Stack } from "@mui/material";
+import Avatar from '@mui/material/Avatar';
 
 const TeachHub = () => {
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-    const location = useLocation()
-    const navigate = useNavigate();
-    const userSession = useAuth();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const location = useLocation()
+  const navigate = useNavigate();
+  const userSession = useAuth();
 
-    const route = getRoute(location);
-    const Bread = route && route.path !== '/' ? <>{'>'} {route.name}</> : <></>
+  const route = getRoute(location);
 
-    useEffect(() =>{
-        if (!userSession) {
-            navigate('/auth');
-        }
-    }, [userSession]);
+  useEffect(() => {
+    if (!userSession) {
+      navigate('/auth');
+    }
+  }, [userSession]);
 
-    return (
-        <ThemeProvider>
-            <CssBaseline/>
-            <AppBar position='relative'>
-                <Toolbar sx={{alignItems:'baseline', padding: 1}}>
-                    {userSession && <IconButton color="inherit" onClick={() => setIsDrawerOpen(x => !x)} edge="start">
-                        <MenuIcon/>
-                    </IconButton>}
-                    <Box sx={{display: 'flex', cursor: 'pointer'}}>
-                        <img height="50" src={icon} alt='icon' onClick={() => navigate('/')}/>
-                    </Box>
-                    <Typography variant="h6" color="inherit" noWrap>
-                        {Bread}
-                    </Typography>
-                </Toolbar>
-            </AppBar>
+  return (
+    <ThemeProvider>
+      <CssBaseline />
+      <AppBar position='relative'>
+        <Toolbar sx={{ padding: 1, justifyContent: 'space-between' }}>
+          <Row sx={{ alignItems: 'baseLine' }}>
+            {userSession && <IconButton color="inherit" onClick={() => setIsDrawerOpen(x => !x)} edge="start">
+                <MenuIcon />
+            </IconButton>}
+            <Box sx={{ display: 'flex', cursor: 'pointer' }}>
+              <img height="50" src={icon} alt='icon' onClick={() => navigate('/')} />
+            </Box>
+          </Row>
+          <Stack direction='row' spacing={1} alignItems='center'>
+            <Typography variant='h5'>
+              {userSession?.username}
+            </Typography>
+            <Avatar sx={{ cursor: 'pointer' }} onClick={() => navigate('/profile')}/>
+          </Stack>
+        </Toolbar>
+      </AppBar>
 
-            {userSession && <ManagementSystemDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)}/>}
+      {userSession && <ManagementSystemDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />}
 
-            <Column sx={{p: 3, flex: 1, justifyContent: "space-between" ,overflow: 'auto'}}>
-                <Column sx={{flex: 1}}><Outlet /></Column>
-                <Typography sx={{mt: 2, color: 'text.disabled'}} variant="body2">
-                    2022 © TeachHub
-                </Typography>
-            </Column>
-        </ThemeProvider>
-    );
+      <Column sx={{ p: 3, flex: 1, justifyContent: "space-between", overflow: 'auto' }}>
+        <Column sx={{ flex: 1 }}><Outlet /></Column>
+        <Typography sx={{ color: 'text.disabled' }} variant="body2">
+          2022 © TeachHub
+        </Typography>
+      </Column>
+    </ThemeProvider>
+  );
 }
 
 export default TeachHub;
