@@ -19,8 +19,9 @@ interface LectureCardProps {
 
 export const LectureCard: FC<LectureCardProps> = ({lecture}) => {
     const navigate = useNavigate();
+    const photoId = lecture.id % 4; // TODO: remove when having real photos
 
-    return <Card sx={{cursor: 'pointer'}} onClick={() => navigate(`lectures/${lecture.id}`)}>
+    return <Card sx={{cursor: 'pointer', height: '100%'}} onClick={() => navigate(`lectures/${lecture.id}`)}>
         <CardHeader
             avatar={
                 <Avatar>{lecture.topic.slice(0, 1).toUpperCase()}</Avatar>
@@ -35,8 +36,8 @@ export const LectureCard: FC<LectureCardProps> = ({lecture}) => {
         />
         <CardMedia
             component="img"
-            // height='194'
-            image="/static/images/lecture.jpg"
+            sx={{height: '40%'}}
+            image={`/static/images/lecture${photoId}.jpg`}
         />
         <CardContent>
             <Typography variant="body2" color="text.secondary">
