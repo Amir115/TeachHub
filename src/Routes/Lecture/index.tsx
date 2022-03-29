@@ -29,9 +29,14 @@ const Lecture = () => {
           <CardContent sx={{ flex: 1 }}>
             <Typography variant='body1'>{lecture.information}</Typography>
           </CardContent>
-          <Row sx={{ justifyContent: 'flex-end' }}>
-            <Button variant='contained' color='secondary' onClick={() => navigate(`subscribe`)}>Subscribe Now</Button>
-          </Row>
+          <Row sx={{ marginLeft: '15px', justifyContent: 'space-between' }}>
+            <Row>
+              { lecture.tags.map((x, i) => (<Chip key={i} label={x} color='secondary' sx={{ marginRight: '5px' }} /> )) }
+            </Row>
+              <Button variant='contained' color='secondary' onClick={() => navigate(`subscribe`)}>
+                Subscribe Now
+              </Button>
+            </Row>
         </Column>
       </Row>
     </Card>

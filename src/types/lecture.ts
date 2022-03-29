@@ -8,5 +8,6 @@ export interface LecturePreview {
   information: string;
   duration: string;
   date: Date;
-  cost: number
+  cost: number;
+  tags: [string]
 }

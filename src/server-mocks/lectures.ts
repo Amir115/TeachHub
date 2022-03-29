@@ -9,7 +9,8 @@ export default [{
     information: "This is a lecture info",
     date: new Date(),
     cost: 10,
-    duration: '1h'
+    duration: '1h',
+    tags: ['history', 'baking']
 },
     {
         id: 2,
@@ -19,7 +20,8 @@ export default [{
         information: "This is a lecture info",
         date: new Date(),
         cost: 10,
-        duration: '1h'
+        duration: '1h',
+        tags: ['history', 'baking']
     },
     {
         id: 3,
@@ -29,7 +31,8 @@ export default [{
         information: "This is a lecture info",
         date: new Date(),
         cost: 10,
-        duration: '1h'
+        duration: '1h',
+        tags: ['history', 'baking']
     },
     {
         id: 4,
@@ -39,7 +42,8 @@ export default [{
         information: "This is a lecture info",
         date: new Date(),
         cost: 10,
-        duration: '1h'
+        duration: '1h',
+        tags: ['history', 'baking']
     },
     {
         id: 5,
@@ -49,7 +53,8 @@ export default [{
         information: "This is a lecture info",
         date: new Date(),
         cost: 10,
-        duration: '1h'
+        duration: '1h',
+        tags: ['history', 'baking']
     },
     {
         id: 6,
@@ -59,7 +64,8 @@ export default [{
         information: "This is a lecture info",
         date: new Date(),
         cost: 10,
-        duration: '1h'
+        duration: '1h',
+        tags: ['history', 'baking']
     },
     {
         id: 7,
@@ -69,7 +75,8 @@ export default [{
         information: "This is a lecture info",
         date: new Date(),
         cost: 10,
-        duration: '1h'
+        duration: '1h',
+        tags: ['history', 'baking']
     },
     {
         id: 8,
@@ -79,6 +86,7 @@ export default [{
         information: 'Sushi (すし, 寿司, 鮨, 鮓, pronounced [sɯɕiꜜ] or [sɯꜜɕi]) is a traditional Japanese dish of prepared vinegared rice (鮨飯, sushi-meshi), usually with some sugar and salt, accompanied by a variety of ingredients (ねた, neta), such as seafood, often raw, and vegetables. Styles of sushi and its presentation vary widely, but the one key ingredient is "sushi rice", also referred to as shari (しゃり), or sumeshi (酢飯).[1]',
         date: new Date(),
         duration: '1h',
-        cost: 40
+        cost: 40,
+        tags: ['history', 'baking']
     }
 ] as LecturePreview[];

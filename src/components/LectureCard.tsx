@@ -12,6 +12,8 @@ import Card from "@mui/material/Card";
 import React, {FC} from "react";
 import {useNavigate} from "react-router-dom";
 import {LecturePreview} from "../types";
+import { Row } from "../theme/layout";
+import { Chip } from "@mui/material";
 
 interface LectureCardProps {
     lecture: LecturePreview
@@ -43,6 +45,9 @@ export const LectureCard: FC<LectureCardProps> = ({lecture}) => {
             <Typography variant="body2" color="text.secondary">
                 {lecture.information}
             </Typography>
+            <Row>
+                {lecture.tags.map((x, i) => (<Chip key={i} label={x} color='secondary' sx={{ marginRight: '5px' }} />)) }
+            </Row>
         </CardContent>
         <CardActions disableSpacing>
             <IconButton aria-label="add to favorites">
