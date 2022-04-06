@@ -18,7 +18,9 @@ const Lecture = () => {
   return lecture ?
       <Stack spacing={1}>
         <Typography variant='h4'>{lecture.name}</Typography>
-        <Typography variant='h6' sx={{textDecoration: 'underline'}}>{`${lecture.lecturer.firstName} ${lecture.lecturer.lastName}`}</Typography>
+        <Typography variant='h6' onClick={() => navigate(`../../lecturer/${lecture.lecturer.id}`)} sx={{textDecoration: 'underline', cursor: 'pointer'}}>
+          {`${lecture.lecturer.firstName} ${lecture.lecturer.lastName}`}
+        </Typography>
         <LectureDetails lecture={lecture} action={subscribeButton} />
       </Stack> :
       <Typography variant='h5'>Sorry, lecture not found...</Typography>

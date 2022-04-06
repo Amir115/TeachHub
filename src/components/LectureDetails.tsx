@@ -20,7 +20,7 @@ export const LectureDetails: FC<LectureDetailsProps> = ({lecture, action}) => {
         <Row sx={{justifyContent: 'space-between'}}>
           <CardHeader title={`${moment(lecture.date).format('DD MMM yyyy | HH:mm')} | ${lecture.duration}`}/>
           <Chip label={`${lecture.cost}$`} color='secondary'
-                sx={{borderRadius: 0, position: 'relative', right: '-16px', fontSize: 16, fontWeight: 'bold', borderRadius: 1}}/>
+                sx={{borderRadius: 0, position: 'relative', right: '-16px', fontSize: 16, fontWeight: 'bold'}}/>
         </Row>
         <CardContent sx={{flex: 1}}>
           <Typography variant='body1'>{lecture.information}</Typography>

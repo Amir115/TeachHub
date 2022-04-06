@@ -14,6 +14,7 @@ import Lecture from './Lecture';
 import Subscribe from './Subscribe';
 import Profile from './Profile';
 import AppProviders from '../providers';
+import LecturerAbout from './LecturerAbout';
 
 export interface BasicRoute {
     Component: () => JSX.Element;
@@ -53,7 +54,8 @@ export const routes: Route[] = [
         showInDrawer: false,
     },
     {name: 'Lecture', path: 'lectures/:id', Component: Lecture, showInDrawer: false},
-    {name: 'Profile', path: 'profile', Component: Profile, showInDrawer: false}
+    {name: 'Profile', path: 'profile', Component: Profile, showInDrawer: false},
+    {name: 'LecturerAbout', path: 'lecturer/:id', Component: LecturerAbout, showInDrawer: false}
 ];
 
 export const isBasicRoute = (route: Route): route is BasicRoute => !route.isIndex;
