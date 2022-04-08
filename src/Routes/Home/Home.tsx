@@ -48,7 +48,7 @@ const Home = () => {
   }, []);
 
   return (
-    <Column sx={{flex: 1}}>
+    <Column sx={{flex: 1, height: '100%' }}>
       {
         !!subscribedLectures.length &&
         <Row>
@@ -76,14 +76,14 @@ const Home = () => {
       }
       {
         !!lectures.length ?
-          <Row>
+          <Row sx={{ height: '100%' }}>
             <Column>
-              <Typography variant='h4'>
+              <Typography variant='h4' sx={{ margin: '15px' }}>
                 You might like
               </Typography>
-              <Grid container spacing={2} sx={{paddingY: 4}}>
+              <Grid container spacing={2} sx={{paddingY: 4, overflowY: 'auto' }}>
                 {lectures?.map((lecture) => (
-                  <Grid key={lecture.id} item xs={3}>
+                  <Grid key={lecture.id} item xs={3} sx={{ overflow: 'auto' }}>
                     <LectureCard lecture={lecture}/>
                   </Grid>
                 ))}

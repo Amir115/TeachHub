@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
@@ -9,6 +9,13 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
 const SignUp = () => {
+    const navigate = useNavigate();
+
+    const signup = async (event) => {
+        // TODO : await SERVER signup
+        navigate('/auth/interests');
+    }
+
     return (
         <>
             <Typography component="h1" variant="h5">Sign Up</Typography>
@@ -32,7 +39,7 @@ const SignUp = () => {
                     </Grid>
                 </Grid>
                 
-                <Button variant="contained" sx={{ mt: 3, mb: 2 }} fullWidth>
+                <Button variant="contained" sx={{ mt: 3, mb: 2 }} fullWidth onClick={signup}>
                     Sign Up
                 </Button>
                 

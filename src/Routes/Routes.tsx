@@ -13,6 +13,7 @@ import TeachHub from '../TeachHub';
 import Lecture from './Lecture';
 import Subscribe from './Subscribe';
 import Profile from './Profile';
+import Interests from './Interests';
 import AppProviders from '../providers';
 import LecturerAbout from './LecturerAbout';
 
@@ -43,9 +44,10 @@ export const routes: Route[] = [
         showInDrawer: false,
         subRoutes: [
             { isIndex: true, Component: Login },
-            { name: 'Sign Up', path: 'signup', Component: SignUp, Icon: <PersonIcon /> },
-        ],
+            { name: 'Sign Up', path: 'signup', Component: SignUp, Icon: <PersonIcon /> }
+        ]
     },
+    { name: 'Interests', path: 'auth/interests', Component: Interests, showInDrawer: false },
     { name: 'Lecture', path: 'lectures/:id', Component: Lecture, showInDrawer: false },
     {
         name: 'SubscribeLecture',
