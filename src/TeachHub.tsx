@@ -57,7 +57,7 @@ const TeachHub = () => {
       {userSession && <ManagementSystemDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />}
 
       <Column sx={{ p: 3, flex: 1, justifyContent: "space-between", overflow: 'auto' }}>
-        <Column sx={{ flex: 1, overflowY: 'hidden' }}><Outlet /></Column>
+        <Column sx={{ flex: 1 }}><Outlet /></Column>
         <Typography sx={{ color: 'text.disabled' }} variant="body2">
           2022 © TeachHub
         </Typography>

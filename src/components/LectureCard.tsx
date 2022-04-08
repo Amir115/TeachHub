@@ -29,7 +29,7 @@ export const LectureCard: FC<LectureCardProps> = ({lecture}) => {
                 <Avatar>{lecture.topic.slice(0, 1).toUpperCase()}</Avatar>
             }
             action={
-                <IconButton>
+                <IconButton onClick={e => e.stopPropagation()}>
                     <MoreVertIcon />
                 </IconButton>
             }

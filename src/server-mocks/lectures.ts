@@ -50,7 +50,7 @@ export default [{
     date: new Date(),
     cost: 10,
     duration: '1h',
-    tags: ['innovation', 'hight tech'],
+    tags: ['innovation', 'high tech'],
     image: '/static/images/lecture4.jpg'
   },
   {
