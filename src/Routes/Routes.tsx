@@ -16,6 +16,7 @@ import Profile from './Profile';
 import Interests from './Interests';
 import AppProviders from '../providers';
 import LecturerAbout from './LecturerAbout';
+import WatchLecture from "./Watch";
 
 export interface BasicRoute {
     Component: () => JSX.Element;
@@ -57,7 +58,8 @@ export const routes: Route[] = [
     },
     {name: 'Lecture', path: 'lectures/:id', Component: Lecture, showInDrawer: false},
     {name: 'Profile', path: 'profile', Component: Profile, showInDrawer: false},
-    {name: 'LecturerAbout', path: 'lecturer/:id', Component: LecturerAbout, showInDrawer: false}
+    {name: 'LecturerAbout', path: 'lecturer/:id', Component: LecturerAbout, showInDrawer: false},
+    {name: 'WatchLecture', path: 'watch/:id', Component: WatchLecture, showInDrawer: false}
 ];
 
 export const isBasicRoute = (route: Route): route is BasicRoute => !route.isIndex;

@@ -11,6 +11,7 @@ import SearchIcon from '@mui/icons-material/Search';
 
 import lecturesMock from '../../server-mocks/lectures';
 import tagsMock from '../../server-mocks/tags';
+import {subscribedLecturesIds} from '../../server-mocks/utils';
 
 import { Box, Button, Chip, CircularProgress, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material';
 import { LectureDetails } from '../../components/LectureDetails';
@@ -33,7 +34,7 @@ const Home = () => {
     const navigate = useNavigate();
 
     // TODO: fetch from server
-    const subscribedLecturesIds = JSON.parse(localStorage.getItem('lectures')) || [];
+    //const subscribedLecturesIds
 
     const enterLectureButton = (
         <Button
