@@ -30,14 +30,14 @@ const Interest = ({ interest, toggleState } : InterestProps) => {
   };
 
   return (
-    <Card sx={{ border: chosen ? "5px solid blue" : "" }} onClick={toggle}>
+    <Card sx={{ border: chosen ? '5px solid #6dc7de' : '', height: '100%' }} onClick={toggle}>
       <CardMedia
         component="img"
         sx={{ height: "80%" }}
         image={interest.image}
       />
       <CardContent>
-        <Typography variant="body2" color="text.secondary" align="center">
+        <Typography variant="h5" align="center">
           {interest.name}
         </Typography>
       </CardContent>
@@ -84,7 +84,7 @@ const Interests = () => {
       <Typography variant="h4" sx={{ margin: '15px' }}>
         Hi {username}, Tell us about your interests
       </Typography>
-      <Grid container spacing={2} sx={{ paddingY: 4, overflowY: 'auto' }}>
+      <Grid container spacing={4} sx={{ paddingY: 4, overflowY: 'auto' }}>
         {interests?.map((interest) => (
           <Grid key={interest.id} item xs={3}>
             <Interest interest={interest} toggleState={toggleState} />
