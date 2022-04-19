@@ -50,10 +50,10 @@ export const LectureCard: FC<LectureCardProps> = ({lecture}) => {
             </Row>
         </CardContent>
         <CardActions disableSpacing>
-            <IconButton aria-label="add to favorites">
+            <IconButton aria-label="add to favorites" onClick={e => e.stopPropagation()}>
                 <FavoriteIcon />
             </IconButton>
-            <IconButton aria-label="share">
+            <IconButton aria-label="share" onClick={e => e.stopPropagation()}>
                 <ShareIcon />
             </IconButton>
         </CardActions>

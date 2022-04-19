@@ -11,4 +11,5 @@ export interface LecturePreview {
   cost: number
   tags: [string]
   image: string
+  participants: number
 }

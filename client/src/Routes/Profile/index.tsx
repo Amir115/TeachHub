@@ -9,9 +9,11 @@ import {
   Typography
 } from '@mui/material';
 import ProfileBullets from './ProfileBullets';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
   const session = useAuth(); // Change that to get user from server with his photo and etc..
+  const navigate = useNavigate();
   const intrests = ['Baking', 'Gym', 'Cooking', 'Js'];
   const knowledge = ['Baking', 'Cooking'];
 
@@ -40,7 +42,7 @@ const Profile = () => {
           <Avatar variant='square' />
         </CenteredColumn>
       </Card>
-      <Button variant='contained' color='secondary'>My lectures</Button>
+      <Button variant='contained' color='secondary' onClick={() => navigate('../my-lectures')}>My lectures</Button>
     </Column>
   </Grid>
 }
