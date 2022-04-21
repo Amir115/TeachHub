@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState, useRef} from "react";
 import { useNavigate, useParams } from 'react-router-dom';
+import Webcam from "react-webcam";
 import Draggable from 'react-draggable';
-import { Resizable } from 'react-resizable';
-import {Box, Button, Card, Typography} from '@mui/material';
+import {Button, Card, Typography, Box} from '@mui/material';
 
 import {Column, Row} from '../../theme/layout';
 
@@ -10,12 +10,17 @@ import lectures from "../../server-mocks/lectures";
 import {subscribedLecturesIds} from "../../server-mocks/utils";
 import {LecturePreview} from "../../types";
 import useAuth from "../../hooks/auth/use-auth";
-import Webcam from "react-webcam";
+import useCameraStream from './use-camera-stream'
 
 const WatchLecture = () => {
   const {id} = useParams();
-  const navigate = useNavigate();
   const session = useAuth()
+  const navigate = useNavigate();
+
+  const [cameraStream, setCameraStream] = useState<MediaStream | null>(null)
+  const [userStreamsBlobUrls, setUserStreamsBlobUrls] = useState<Record<string, string | undefined>>({})
+  
+  const [startCapturing, usersMediaSources] = useCameraStream(cameraStream, `/watch/${id}`)
 
   const [lecture, setLecture] = useState<LecturePreview>();
   const isOwner = lecture?.lecturer.id === session?.userId;
@@ -31,8 +36,31 @@ const WatchLecture = () => {
     }
   }, []);
 
-  const subscribeButton = <Button variant='contained' color='secondary' onClick={() => navigate(`subscribe`)}>Subscribe Now</Button>;
+  useEffect(() => startCapturing(), [startCapturing])
 
+  useEffect(() => {
+    const activeSockets = Object.keys(usersMediaSources);
+    const newBlobUrls = {...userStreamsBlobUrls}
+
+    activeSockets.forEach(userSocketId => {
+      const userMediaSource = usersMediaSources[userSocketId].mediaSource;
+      if (!newBlobUrls[userSocketId]) {
+        newBlobUrls[userSocketId] = window.URL.createObjectURL(userMediaSource)
+      }
+    });
+
+    Object.keys(newBlobUrls).forEach(userSocketId => {
+      if (!activeSockets.includes(userSocketId)) {
+        delete newBlobUrls[userSocketId]
+      }
+    })
+
+    setUserStreamsBlobUrls(newBlobUrls);
+  }, [usersMediaSources]);
+
+  const lecturerSocketId = Object.keys(usersMediaSources)
+      .find(userSocketId => usersMediaSources[userSocketId].userId === lecture?.lecturer.id)
+  
   return lecture ? <Column sx={{flex:1}}>
       <Row sx={{alignItems: 'baseline'}}>
         <Row sx={{flex: 1, alignItems: 'baseline'}}>
@@ -48,16 +76,30 @@ const WatchLecture = () => {
       </Row>
     <Row sx={{flex:1, position: 'relative', maxWidth: '100%'}}>
       <Column sx={{flex: 1, height: 700}}>
-        <Webcam audio={true} style={{width: '100%', height: '100%'}} />
+        <video autoPlay src={userStreamsBlobUrls[lecturerSocketId || '']} style={{width: '100%', height: '100%'}} />
       </Column>
       
       <Draggable bounds='parent'>
         <Row sx={{height: 200, width: 200, position: 'absolute', color: 'primary.main', zIndex: 100, bottom: 0, right: 0}}>
           <Card raised sx={{height: '100%', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-            {`${lecture.lecturer.firstName} ${lecture.lecturer.lastName}`}
+            <Webcam audio={true} style={{width: '100%', height: '100%'}} onUserMedia={stream => setCameraStream(stream)} />
           </Card>
         </Row>
       </Draggable>
+
+      <Column sx={{position: 'absolute', zIndex: 100, bottom: 0, left: 0}}>
+        {
+          Object.keys(userStreamsBlobUrls).filter(x => x !== lecturerSocketId).map(userSocketId => (
+            <Box key={userSocketId} sx={{mb: 2}}>
+              <Draggable bounds='parent'>
+                <Card raised sx={{height: 200, width: 200, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                  <video autoPlay src={userStreamsBlobUrls[userSocketId]} style={{width: '100%', height: '100%'}} />
+                </Card>
+              </Draggable>
+            </Box>
+          ))
+        }
+      </Column>
     </Row>
     </Column>
      : <></>
