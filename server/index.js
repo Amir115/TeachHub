@@ -12,9 +12,6 @@ const apiRouter = require('./routes');
 const errorHandler = require('errorhandler');
 
 const app = express()
-const server = http.createServer(app);
-
-const io = createSocketIo(server);
 
 app.set('port', process.env.PORT || 8080)
 app.use(bodyParser.json())
@@ -27,6 +24,9 @@ app.use('/api', apiRouter)
 if (app.get('env') === 'development') {
     app.use(errorHandler())
 }
+
+const server = http.createServer(app);
+const io = createSocketIo(server);
 
 server.listen(app.get('port'), () => {
     console.log('Express server listening on port ' + app.get('port'))

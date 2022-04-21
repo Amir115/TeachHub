@@ -14,8 +14,8 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:8080/api'
       },
-      '/socket': {
-        target: 'ws://localhost:8080/socket',
+      '/socket.io': {
+        target: 'ws://localhost:8080/socket.io',
         ws: true
       }
     }
