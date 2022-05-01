@@ -2,7 +2,7 @@ import {useEffect, useState, useRef} from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import Webcam from "react-webcam";
 import Draggable from 'react-draggable';
-import {Button, Card, Typography, Box} from '@mui/material';
+import {Card, Typography, Box} from '@mui/material';
 
 import {Column, Row} from '../../theme/layout';
 
@@ -22,8 +22,16 @@ const WatchLecture = () => {
   
   const [startCapturing, usersMediaSources] = useCameraStream(cameraStream, `/watch/${id}`)
 
+  const createMediaSourcesSnapshot = (): Partial<Record<string, MediaSource>> => 
+    Object.keys(usersMediaSources).reduce((all, key) => ({...all, [key]: usersMediaSources[key]?.mediaSource}), {})
+
+  const usersMediaSourcesSnapshot = useRef(createMediaSourcesSnapshot())
+
   const [lecture, setLecture] = useState<LecturePreview>();
   const isOwner = lecture?.lecturer.id === session?.userId;
+
+  const findUserSocket = (userId: string) => Object.keys(usersMediaSources)
+    .find(userSocketId => lecture && usersMediaSources[userSocketId]?.userId === userId)
 
   useEffect(() => {
     // TODO: fetch from server
@@ -36,15 +44,23 @@ const WatchLecture = () => {
     }
   }, []);
 
-  useEffect(() => startCapturing(), [startCapturing])
+  useEffect(() => {
+    if (cameraStream) {
+      return startCapturing();
+    }
+  }, [cameraStream])
 
   useEffect(() => {
     const activeSockets = Object.keys(usersMediaSources);
     const newBlobUrls = {...userStreamsBlobUrls}
 
     activeSockets.forEach(userSocketId => {
-      const userMediaSource = usersMediaSources[userSocketId].mediaSource;
-      if (!newBlobUrls[userSocketId]) {
+      const userMediaSource = usersMediaSources[userSocketId]?.mediaSource;
+      if (!userMediaSource) return;
+
+      const userMediaSourceSnapshot = usersMediaSourcesSnapshot.current[userSocketId]
+
+      if (!newBlobUrls[userSocketId] || userMediaSource !== userMediaSourceSnapshot) {
         newBlobUrls[userSocketId] = window.URL.createObjectURL(userMediaSource)
       }
     });
@@ -56,10 +72,11 @@ const WatchLecture = () => {
     })
 
     setUserStreamsBlobUrls(newBlobUrls);
+    usersMediaSourcesSnapshot.current = createMediaSourcesSnapshot();
   }, [usersMediaSources]);
 
-  const lecturerSocketId = Object.keys(usersMediaSources)
-      .find(userSocketId => usersMediaSources[userSocketId].userId === lecture?.lecturer.id)
+  const lecturerSocketId = lecture && findUserSocket(lecture.lecturer.id)
+  const mySocketId = findUserSocket(session?.userId || '')
   
   return lecture ? <Column sx={{flex:1}}>
       <Row sx={{alignItems: 'baseline'}}>
@@ -89,7 +106,7 @@ const WatchLecture = () => {
 
       <Column sx={{position: 'absolute', zIndex: 100, bottom: 0, left: 0}}>
         {
-          Object.keys(userStreamsBlobUrls).filter(x => x !== lecturerSocketId).map(userSocketId => (
+          Object.keys(userStreamsBlobUrls).filter(x => ![lecturerSocketId, mySocketId].includes(x)).map(userSocketId => (
             <Box key={userSocketId} sx={{mb: 2}}>
               <Draggable bounds='parent'>
                 <Card raised sx={{height: 200, width: 200, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>

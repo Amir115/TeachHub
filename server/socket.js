@@ -31,8 +31,8 @@ module.exports = server => {
             console.log(reason)
         })
 
-        userSocket.on(USER_IMAGE_EVENT, buffer => {
-            namespace.emit(USER_IMAGE_EVENT, buffer, userSocket.id)
+        userSocket.on(USER_IMAGE_EVENT, (buffer, removeOldChunks) => {
+            namespace.emit(USER_IMAGE_EVENT, buffer, userSocket.id, removeOldChunks)
         })
     });
 

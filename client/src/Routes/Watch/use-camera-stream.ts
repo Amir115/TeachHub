@@ -2,45 +2,55 @@ import {useState, useEffect, useRef, useCallback} from 'react';
 import { io, Socket } from "socket.io-client";
 import omit from 'lodash/omit';
 import useAuth from '../../hooks/auth/use-auth';
+import { USED_MIME_TYPE } from './codecs';
+import useMediaRecorder from './use-media-recorder';
 
-type UserMediaSource = {userId: string, mediaSource: MediaSource}
-
-const usedMimeType = "video/webm; codecs=\"opus, vp8\""
+type UserMediaSource = {userId: string, mediaSource?: MediaSource}
 
 const useMapRef = <T>() => {
-    const mapRef = useRef<Record<string, T | undefined>>({});
+    const mapRef = useRef<Partial<Record<string, T>>>({});
 
     return mapRef.current
 }
 
-const useCameraStream = (outgoingStream: MediaStream | null, streamPath: string): [() => () => void, Record<string, UserMediaSource>] => {
+const useCameraStream = (outgoingStream: MediaStream | null, streamPath: string): [() => () => void, Partial<Record<string, UserMediaSource>>] => {
     const session = useAuth()
     const socketRef = useRef<Socket | null>(null)
     
-    const incomingUserImagesQueues = useMapRef<ArrayBuffer[]>()
-    const incomingSourceBuffers = useMapRef<SourceBuffer>()
+    const usersBufferPendingOperations = useMapRef<((buffer: SourceBuffer) => void | true)[]>()
+    const usersSourceBuffers = useMapRef<SourceBuffer>()
     
     const [usersMediaSources, setUsersMediaSources] = useState<Record<string, UserMediaSource>>({})
+    const usersMediaSourcesRef = useRef(usersMediaSources)
     
-    const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+    const mediaRecorder = useMediaRecorder(outgoingStream, (buffer, headersSent) => socketRef.current?.emit('userimage', buffer, !headersSent))
 
-    const setupMediaSource = (userSocketId: string) => {
+    const flushUserSourceBufferQueue = (userSocketId: string) => {
+        const userBuffer = usersSourceBuffers[userSocketId]
+        if (!userBuffer) return;
+
+        const userOpQueue = usersBufferPendingOperations[userSocketId]
+        const nextOperation = userOpQueue?.shift()
+
+        if (nextOperation && !userBuffer.updating) {
+            const result = nextOperation(userBuffer);
+            if (result) flushUserSourceBufferQueue(userSocketId)
+        }
+    }
+ 
+    const setupMediaSource = (userSocketId: string, onOpen?: () => void) => {
         const mediaSource = new MediaSource()
     
         const onSourceOpen = () => {
-            const sourceBuffer = mediaSource.addSourceBuffer(usedMimeType)
-            
-            const onUpdate = () => {
-                const userQueue = incomingUserImagesQueues[userSocketId]
-                const nextItem = userQueue?.shift()
+            const sourceBuffer = mediaSource.addSourceBuffer(USED_MIME_TYPE)
 
-                if (nextItem && !sourceBuffer?.updating) {
-                    sourceBuffer.appendBuffer(nextItem)
-                }
+            const onUpdate = () => {
+                flushUserSourceBufferQueue(userSocketId)
             };
             
-            incomingSourceBuffers[userSocketId] = sourceBuffer
+            usersSourceBuffers[userSocketId] = sourceBuffer
             sourceBuffer.addEventListener('update', onUpdate, false);
+            onOpen?.();
         };
 
         const onSourceClose = (event: Event) => {
@@ -57,34 +67,44 @@ const useCameraStream = (outgoingStream: MediaStream | null, streamPath: string)
         const socket = io(streamPath, {query: {token: session?.token}})
         socket.connect()
 
-        const handleUserImage = (chunk: ArrayBuffer, userSocketId: string) => {
-            const userSourceBuffer = incomingSourceBuffers[userSocketId];
-            if (!userSourceBuffer) {
-                return;
+        const handleUserImage = (chunk: ArrayBuffer, userSocketId: string, removeOldChunks: boolean = false) => {
+            let userOperationsQueue = usersBufferPendingOperations[userSocketId];
+            if (!userOperationsQueue) {
+                userOperationsQueue = usersBufferPendingOperations[userSocketId] = []; 
             }
 
-            let userImagesQueue = incomingUserImagesQueues[userSocketId];
-            if (!userImagesQueue) {
-                userImagesQueue = incomingUserImagesQueues[userSocketId] = []; 
+            const userMediaSource = usersMediaSourcesRef.current[userSocketId]
+            if (removeOldChunks) {
+                userMediaSource?.mediaSource?.readyState === 'open' && userMediaSource?.mediaSource?.endOfStream();
+                delete usersSourceBuffers[userSocketId]
+                userMediaSource.mediaSource = setupMediaSource(userSocketId, () => flushUserSourceBufferQueue(userSocketId))
+                setUsersMediaSources({...usersMediaSourcesRef.current})
             }
-
-            if (userImagesQueue.length ||  userSourceBuffer.updating) {
-                userImagesQueue.push(chunk)
-            } else {
-                userSourceBuffer.appendBuffer(chunk)
+           
+            userOperationsQueue.push(buffer => {
+                try {
+                    buffer.appendBuffer(chunk)
+                } catch(e: any) {
+                    console.warn(e);
+                    delete usersSourceBuffers[userSocketId];
+                }
+                
+            })
+            if (!removeOldChunks) {
+                flushUserSourceBufferQueue(userSocketId)
             }
         };
 
         const handleUserJoin = (userSocketId: string, userId: string) => {
             setUsersMediaSources(existingMediaSources => ({
                 ...existingMediaSources,
-                [userSocketId]: {userId, mediaSource: setupMediaSource(userSocketId)}
+                [userSocketId]: {userId, mediaSource: undefined}
             }));
         }
 
         const handleUserLeft = (userSocketId: string) => {
             const userMediaSource = usersMediaSources[userSocketId];
-            userMediaSource?.mediaSource.endOfStream();
+            userMediaSource?.mediaSource?.endOfStream();
             setUsersMediaSources(existingMediaSources => ({...omit(existingMediaSources, userSocketId)}));
         }
 
@@ -95,26 +115,6 @@ const useCameraStream = (outgoingStream: MediaStream | null, streamPath: string)
         return socket;
     }
 
-    const setupMediaRecorder = () => {
-      if (outgoingStream) {
-        const recorder = new MediaRecorder(outgoingStream, {mimeType: usedMimeType});
-        
-        const onDataAvailable = ({data}: BlobEvent) => {
-            if (data.size > 0) {
-                data.arrayBuffer().then(buffer => {
-                    socketRef.current?.emit('userimage', buffer)
-                })
-            }
-        }
-        
-        recorder.addEventListener('dataavailable', onDataAvailable);
-
-        return recorder;
-      }  
-
-      return null;
-    }
-
     useEffect(() => {
         socketRef.current = setupSocket();
 
@@ -122,15 +122,16 @@ const useCameraStream = (outgoingStream: MediaStream | null, streamPath: string)
             socketRef.current?.disconnect();
         }
     }, []);
+
+    useEffect(() => {
+        usersMediaSourcesRef.current = usersMediaSources
+    }, [usersMediaSources]);
     
-    const startCapturing = useCallback(() => {
-      const recorder = setupMediaRecorder()
+    const startCapturing = () => {
+      mediaRecorder.start();  
 
-      mediaRecorderRef.current = recorder
-      recorder?.start(500);
-
-      return () => recorder?.stop()
-    }, [outgoingStream]);
+      return mediaRecorder.stop;
+    };
 
     return [startCapturing, usersMediaSources]
 }

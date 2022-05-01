@@ -1,0 +1,1 @@
+export const USED_MIME_TYPE = "video/webm; codecs=\"opus, vp8\""
