@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
 
-import { Column, Row } from '../../theme/layout';
+import { CenteredColumn, Column, Row } from '../../theme/layout';
 import { LecturePreview } from '../../types';
 import { LectureCard } from '../../components/LectureCard';
 
@@ -24,6 +24,7 @@ interface Tag {
 }
 
 const Home = () => {
+    const isLoadingLectures = false; // TODO: Server
     const [lectures, setLectures] = useState<LecturePreview[]>([]);
     const [subscribedLectures, setSubscribedLectures] = useState<LecturePreview[]>([]);
     const [searchKey, setSearchKey] = useState('');
@@ -135,7 +136,7 @@ const Home = () => {
                     </Column>
                 </Row>
             )}
-            {!!lectures.length ?
+            {!isLoadingLectures ?
                 <Row sx={{ height: '100%' }}>
                     <Column sx={{ width: '100%' }}>
                         <Typography variant='h4' sx={{ margin: '15px' }}>
@@ -180,7 +181,7 @@ const Home = () => {
                         </Grid>
                     </Column>
                 </Row> :
-                <CircularProgress />
+                <CenteredColumn sx={{flex: 1}}><CircularProgress /></CenteredColumn>
             }
         </Column>
     );
