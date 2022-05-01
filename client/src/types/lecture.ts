@@ -6,7 +6,7 @@ export interface LecturePreview {
   topic: string
   lecturer: Person
   information: string
-  duration: string
+  duration: number
   date: Date
   cost: number
   tags: [string]
