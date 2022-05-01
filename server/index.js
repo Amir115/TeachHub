@@ -33,6 +33,6 @@ if (app.get('env') === 'development') {
 const server = http.createServer(app);
 const io = createSocketIo(server);
 
-server.listen(app.get('port'), () => {
+server.listen(app.get('port'), `0.0.0.0`, () => {
     console.log('Express server listening on port ' + app.get('port'))
 })
