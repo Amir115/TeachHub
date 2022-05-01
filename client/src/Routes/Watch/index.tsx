@@ -93,16 +93,20 @@ const WatchLecture = () => {
       </Row>
     <Row sx={{flex:1, position: 'relative', maxWidth: '100%'}}>
       <Column sx={{flex: 1, height: 700}}>
-        <video autoPlay src={userStreamsBlobUrls[lecturerSocketId || '']} style={{width: '100%', height: '100%'}} />
+        {
+            lecturerSocketId !== mySocketId
+            ? <video autoPlay src={userStreamsBlobUrls[lecturerSocketId || '']} style={{width: '100%', height: '100%'}} />
+            : <Webcam muted audio={true} style={{width: '100%', height: '100%'}} onUserMedia={stream => setCameraStream(stream)} />
+        }
       </Column>
       
-      <Draggable bounds='parent'>
+      {lecturerSocketId !== mySocketId && <Draggable bounds='parent'>
         <Row sx={{height: 200, width: 200, position: 'absolute', color: 'primary.main', zIndex: 100, bottom: 0, right: 0}}>
           <Card raised sx={{height: '100%', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-            <Webcam audio={true} style={{width: '100%', height: '100%'}} onUserMedia={stream => setCameraStream(stream)} />
+            <Webcam muted audio={true} style={{width: '100%', height: '100%'}} onUserMedia={stream => setCameraStream(stream)} />
           </Card>
         </Row>
-      </Draggable>
+      </Draggable>}
 
       <Column sx={{position: 'absolute', zIndex: 100, bottom: 0, left: 0}}>
         {
