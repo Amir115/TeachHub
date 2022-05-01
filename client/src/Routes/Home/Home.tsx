@@ -11,7 +11,7 @@ import SearchIcon from '@mui/icons-material/Search';
 
 import lecturesMock from '../../server-mocks/lectures';
 import tagsMock from '../../server-mocks/tags';
-import {subscribedLecturesIds} from '../../server-mocks/utils';
+import {getSubscribedLecturesIds} from '../../server-mocks/utils';
 
 import { Box, Button, Chip, CircularProgress, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material';
 import { LectureDetails } from '../../components/LectureDetails';
@@ -73,7 +73,7 @@ const Home = () => {
         // TODO: replace with real server request
         setTimeout(() => {
             setLectures(lecturesMock);
-            setSubscribedLectures(subscribedLecturesIds.map(id => lecturesMock.find(x => x.id === id)).filter((x): x is LecturePreview => Boolean(x)) || []);
+            setSubscribedLectures(getSubscribedLecturesIds().map(id => lecturesMock.find(x => x.id === id)).filter((x): x is LecturePreview => Boolean(x)) || []);
             setCurrentLectureIndex(0);
             setTags(tagsMock.map(value => ({ value, selected: false })));
         }, 300);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Column, Row } from '../../theme/layout';
 import { Button, Card, CardActions, Stack, TextField, Typography } from '@mui/material';
@@ -6,6 +6,7 @@ import { DatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDate from '@mui/lab/AdapterMoment';
 import lectures from '../../server-mocks/lectures';
 import { useSnackbar } from '../../providers/SnackbarProvider';
+import { getSubscribedLecturesIds } from '../../server-mocks/utils';
 
 const Subscribe = () => {
     const { id } = useParams();
@@ -14,14 +15,13 @@ const Subscribe = () => {
     const [cardNumber, setCardNumber] = useState();
     const [name, setName] = useState();
     const [cvv, setCvv] = useState();
-    const [expirationDate, setExpirationDate] = useState();
+    const [expirationDate, setExpirationDate] = useState<Date | undefined | null>();
 
     // TODO: fetch from server
     const lecture = lectures.find(x => x.id === id);
 
     const handleSubscribe = () => {
-        const currentLectures = JSON.parse(localStorage.getItem('lectures')) || [];
-        localStorage.setItem('lectures', JSON.stringify([...currentLectures, lecture?.id]));
+        localStorage.setItem('lectures', JSON.stringify([...getSubscribedLecturesIds(), lecture?.id]));
         
         openMessage('Subscribed successfully!', 'success');
         navigate('../');

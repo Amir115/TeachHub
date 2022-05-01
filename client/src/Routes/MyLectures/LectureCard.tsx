@@ -1,7 +1,10 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CardHeader, Avatar, IconButton, CardMedia, CardContent, Typography, Card, Chip } from '@mui/material';
-import { Edit, Person } from '@mui/icons-material';
+
+import EditIcon from '@mui/icons-material/Edit';
+import PersonIcon from '@mui/icons-material/Person';
+
 import { LecturePreview } from '../../types';
 import { Row } from '../../theme/layout';
 
@@ -22,10 +25,10 @@ export const LectureCard: FC<LectureCardProps> = ({ lecture }) => {
                     <Row alignItems={'center'}>
                         <Row>
                             <Typography>{lecture.participants}</Typography>
-                            <Person />
+                            <PersonIcon />
                         </Row>
                         <IconButton onClick={e => e.stopPropagation()}>
-                            <Edit />
+                            <EditIcon />
                         </IconButton>
                     </Row>
                 }

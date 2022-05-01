@@ -7,7 +7,7 @@ import {Card, Typography, Box} from '@mui/material';
 import {Column, Row} from '../../theme/layout';
 
 import lectures from "../../server-mocks/lectures";
-import {subscribedLecturesIds} from "../../server-mocks/utils";
+import {getSubscribedLecturesIds} from "../../server-mocks/utils";
 import {LecturePreview} from "../../types";
 import useAuth from "../../hooks/auth/use-auth";
 import useCameraStream from './use-camera-stream'
@@ -39,7 +39,7 @@ const WatchLecture = () => {
 
     setLecture(currentlecture);
 
-    if(!currentlecture || !id || !subscribedLecturesIds.includes(id)) {
+    if(!currentlecture || !id || !getSubscribedLecturesIds().includes(id)) {
       navigate('/');
     }
   }, []);

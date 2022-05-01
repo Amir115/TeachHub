@@ -2,8 +2,6 @@ import { FC, Fragment } from "react";
 import { useNavigate } from 'react-router-dom';
 
 import IconButton from "@mui/material/IconButton";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -12,6 +10,9 @@ import ListItemText from "@mui/material/ListItemText";
 import Drawer from "@mui/material/Drawer";
 import {BasicRoute, isBasicRoute, routes} from './Routes';
 import { styled, useTheme } from "@mui/material/styles";
+
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 const DrawerHeader = styled('div')(({theme}) => ({
     display: 'flex',
@@ -69,7 +70,7 @@ export const ManagementSystemDrawer: FC<ManagementSystemDrawerProps> = ({open, o
                 </IconButton>
             </DrawerHeader>
             <Divider/>
-            <List>{ routes.filter(x => isBasicRoute(x) && x.showInDrawer !== false).map(renderNavItem) }</List>
+            <List>{ routes.filter((x): x is BasicRoute => isBasicRoute(x) && x.showInDrawer !== false).map(renderNavItem) }</List>
             <Divider/>
         </Drawer>
     )

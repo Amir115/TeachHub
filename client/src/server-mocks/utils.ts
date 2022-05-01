@@ -1,3 +1,11 @@
-export const subscribedLecturesIds: string[] = JSON.parse(localStorage.getItem('lectures')) || [];
+export const getSubscribedLecturesIds = (): string[] =>  {
+    const subscribedLecturesStr = localStorage.getItem('lectures');
 
-export const myLecturesIds: string[] = JSON.parse(localStorage.getItem('my-lectures')) || [];
+    return subscribedLecturesStr ? JSON.parse(subscribedLecturesStr) : [];
+}
+
+export const getMyLecturesIds = (): string[] => {
+    const myLecturesStr = localStorage.getItem('my-lectures');
+
+    return myLecturesStr ? JSON.parse(myLecturesStr) : [];
+}

@@ -1,19 +1,21 @@
+import React, {FC} from "react";
+import {useNavigate} from "react-router-dom";
+
 import CardHeader from "@mui/material/CardHeader";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CardActions from "@mui/material/CardActions";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
 import Card from "@mui/material/Card";
-import React, {FC} from "react";
-import {useNavigate} from "react-router-dom";
 import {LecturePreview} from "../types";
 import { Row } from "../theme/layout";
 import { Chip } from "@mui/material";
+
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import ShareIcon from "@mui/icons-material/Share";
 
 interface LectureCardProps {
     lecture: LecturePreview
