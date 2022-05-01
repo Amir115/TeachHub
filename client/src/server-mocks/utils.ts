@@ -4,7 +4,7 @@ export const getSubscribedLecturesIds = (): string[] =>  {
     return subscribedLecturesStr ? JSON.parse(subscribedLecturesStr) : [];
 }
 
-export const getMyLecturesIds = (): string[] => {
+export const getMyLectures = () => {
     const myLecturesStr = localStorage.getItem('my-lectures');
 
     return myLecturesStr ? JSON.parse(myLecturesStr) : [];
