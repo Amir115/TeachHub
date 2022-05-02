@@ -1,13 +1,15 @@
 import {Router} from 'express'
-import lectures from './lectures';
 
-const authMiddleware = require('./middlewares/auth')
-const user = require('./user')
+import authMiddleware from './middlewares/auth';
+
+import lecturesRouter from './lectures';
+import userRouter from './user';
 
 const router = Router();
 
 router.use(authMiddleware)
-router.use('/user', user)
-router.use('/lectures', lectures)
 
-module.exports = router;
+router.use('/user', userRouter)
+router.use('/lectures', lecturesRouter)
+
+export default router;

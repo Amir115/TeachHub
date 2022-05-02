@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from 'express';
+import { RequestHandler } from 'express';
 import Lecture from './model';
 
-export const getAll = async (req: Request, res: Response, next: NextFunction) => {
+export const getAll: RequestHandler = async (req, res, next) => {
   try {
     const entities = await Lecture.find();
 
@@ -11,12 +11,12 @@ export const getAll = async (req: Request, res: Response, next: NextFunction) =>
   }
 };
 
-export const getById = async (req: Request, res: Response, next: NextFunction) => {
+export const getById: RequestHandler = async (req, res, next) => {
   try {
-    const student = await Lecture.findById(req.params.id);
+    const lecture = await Lecture.findById(req.params.id);
 
-    return student ? res.send(student) : res.status(404).send({
-      message: `student with id ${req.params.id} not exists`,
+    return lecture ? res.send(lecture) : res.status(404).send({
+      message: `lecture with id ${req.params.id} not exists`,
     });
   } catch (e) {
     return next(e);

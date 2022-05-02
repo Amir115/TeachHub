@@ -1,17 +1,19 @@
 
-const { Server: SocketIOServer } = require("socket.io");
+import { Server } from 'http'
+import { Server as SocketIOServer, Socket } from 'socket.io';
 
 const USER_JOIN_EVENT = 'userjoin'
 const USER_IMAGE_EVENT = 'userimage'
 
-const getUserId = userSocket => {
+// TODO: Make this really get the user id
+const getUserId = (userSocket: Socket) => {
     const token = userSocket.handshake.query.token;
     const userId = token === 'secret' ? '1' : 'xxx';
 
     return userId
 }
 
-module.exports = server => {
+export default (server: Server) => {
     const io = new SocketIOServer(server)
 
     io.of(/^\/watch\/\w+$/).on("connection", userSocket => {
