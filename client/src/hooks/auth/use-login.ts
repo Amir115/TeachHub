@@ -11,11 +11,20 @@ function useLogin(): LoginUIResult {
         setIsLoading(true)
 
         try {
-            // TODO: Really do the login (use email & password)
-            await new Promise(resolve => setTimeout(resolve, 500))
+            const res = await fetch('/api/login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({username: email, password})
+            })
 
-            const isAdmin = email === 'a@b.c'
-            setUser({token: isAdmin ? 'secret' : '123', userId: isAdmin ? '1' : 'xxx', username: 'moshe'});
+            if (!res.ok) {
+                throw Error('Cannot login')
+            }
+
+            const loggedInUser = await res.json()
+            setUser(loggedInUser);
         } catch (e: any) {
             setError(e.message)
             throw e;

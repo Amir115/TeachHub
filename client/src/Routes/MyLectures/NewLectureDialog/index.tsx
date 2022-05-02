@@ -23,12 +23,12 @@ interface NewLectureDialogProps {
 
 const NewLectureDialog = ({ open, onClose, setLectures }: NewLectureDialogProps) => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
-  const session = useAuth();
+  const user = useAuth();
 
   const onSubmit: SubmitHandler<Inputs> = data => {
     const newLecture: Lecture = {...data,
       id: (getMyLectures().length + lectures.length + 1).toString(),
-      lecturer: lecturers.find(({id}) => session?.userId) as Person,
+      lecturer: lecturers.find(({id}) => user?.id === id) as Person,
       cost: data.price,
       name: data.subject,
       image: '/static/images/lecture1.jpg',

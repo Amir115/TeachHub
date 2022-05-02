@@ -14,7 +14,7 @@ import useCameraStream from './use-camera-stream'
 
 const WatchLecture = () => {
   const {id} = useParams();
-  const session = useAuth()
+  const user = useAuth()
   const navigate = useNavigate();
 
   const [cameraStream, setCameraStream] = useState<MediaStream | null>(null)
@@ -28,7 +28,7 @@ const WatchLecture = () => {
   const usersMediaSourcesSnapshot = useRef(createMediaSourcesSnapshot())
 
   const [lecture, setLecture] = useState<Lecture>();
-  const isOwner = lecture?.lecturer.id === session?.userId;
+  const isOwner = lecture?.lecturer.id === user?.id;
 
   const findUserSocket = (userId: string) => Object.keys(usersMediaSources)
     .find(userSocketId => lecture && usersMediaSources[userSocketId]?.userId === userId)
@@ -76,7 +76,7 @@ const WatchLecture = () => {
   }, [usersMediaSources]);
 
   const lecturerSocketId = lecture && findUserSocket(lecture.lecturer.id)
-  const mySocketId = findUserSocket(session?.userId || '')
+  const mySocketId = findUserSocket(user?.id || '')
   
   return lecture ? <Column sx={{flex:1}}>
       <Row sx={{alignItems: 'baseline'}}>

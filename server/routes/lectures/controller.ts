@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import Lecture from './model';
+import Lecture from '../../models/lecture/Lecture';
 
 export const getAll: RequestHandler = async (req, res, next) => {
   try {

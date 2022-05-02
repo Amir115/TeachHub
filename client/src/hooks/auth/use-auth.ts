@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
-import {getUser, onUserSet, UserSession} from '../../auth';
+import {getUser, onUserSet, PersonWithUsername} from '../../auth';
 
-const useAuth = (): UserSession | null => {
+const useAuth = (): PersonWithUsername | null => {
     const [currentUserSession, setCurrentUserSession] = useState(getUser())
 
     useEffect(() => {

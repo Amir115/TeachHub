@@ -12,11 +12,11 @@ import SignUp from './SignUp'
 import useAuth from '../../hooks/auth/use-auth';
 
 const Auth = () => {
-    const userSession = useAuth();
+    const user = useAuth();
     const navigate = useNavigate();
     
     useEffect(() => {
-        if (userSession) {
+        if (user) {
             navigate('/')
         }
     }, []);

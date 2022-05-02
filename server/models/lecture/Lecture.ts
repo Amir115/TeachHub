@@ -1,5 +1,4 @@
 import { model, Schema } from 'mongoose';
-import { personSchema } from '../persons/model';
 import { Lecture} from '../../../common/types';
 
 const schema = new Schema<Lecture>({
@@ -44,7 +43,8 @@ const schema = new Schema<Lecture>({
     required: true
   },
   lecturer: {
-    type: personSchema,
+    type: String,
+    ref: 'Person',
     required: true
   },
 });

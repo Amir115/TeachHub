@@ -15,7 +15,7 @@ import {InterestsSelection} from "./InterestSelection";
 
 const Interests = () => {
   const navigate = useNavigate();
-  const { username } = useUser() || {};
+  const { firstName } = useUser() || {};
 
   const onSubmit = (chosenInterests: InterestType[]) => {
     // TODO: send chosenInterests to server
@@ -26,7 +26,7 @@ const Interests = () => {
   return (
     <Column sx={{ flex: 1, alignItems: 'center', height: '100%' }}>
       <Typography variant="h4" sx={{ margin: '15px' }}>
-        Hi {username}, Tell us about your interests
+        Hi {firstName}, Tell us about your interests
       </Typography>
       <InterestsSelection onSubmit={onSubmit} submitButtonTitle={'Show me some lectures!'}/>
     </Column>

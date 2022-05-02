@@ -1,7 +1,6 @@
 import {useState, useEffect, useRef, useCallback} from 'react';
 import { io, Socket } from "socket.io-client";
 import omit from 'lodash/omit';
-import useAuth from '../../hooks/auth/use-auth';
 import { USED_MIME_TYPE } from './codecs';
 import useMediaRecorder from './use-media-recorder';
 
@@ -14,7 +13,6 @@ const useMapRef = <T>() => {
 }
 
 const useCameraStream = (outgoingStream: MediaStream | null, streamPath: string): [() => () => void, Partial<Record<string, UserMediaSource>>] => {
-    const session = useAuth()
     const socketRef = useRef<Socket | null>(null)
     
     const usersBufferPendingOperations = useMapRef<((buffer: SourceBuffer) => void | true)[]>()
@@ -64,7 +62,7 @@ const useCameraStream = (outgoingStream: MediaStream | null, streamPath: string)
     }
 
     const setupSocket = () => {
-        const socket = io(streamPath, {query: {token: session?.token}})
+        const socket = io(streamPath)
         socket.connect()
 
         const handleUserImage = (chunk: ArrayBuffer, userSocketId: string, removeOldChunks: boolean = false) => {

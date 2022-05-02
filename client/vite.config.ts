@@ -13,11 +13,7 @@ export default defineConfig({
     https: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:8080/api'
-      },
-      '/socket.io': {
-        target: 'ws://localhost:8080/socket.io',
-        ws: true
+        target: 'http://localhost:8080/'
       }
     }
   }

@@ -1,5 +1,5 @@
 import {config as dotenvConfig} from 'dotenv';
-import startServer from './config/start-server';
+import startServer from './config/server';
 import connectDB from './config/mongoose';
 
 dotenvConfig()

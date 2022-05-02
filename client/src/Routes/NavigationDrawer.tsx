@@ -1,6 +1,8 @@
 import { FC, Fragment } from "react";
 import { useNavigate } from 'react-router-dom';
 
+import { unsetUser } from '../auth'
+
 import IconButton from "@mui/material/IconButton";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
@@ -39,6 +41,16 @@ export const ManagementSystemDrawer: FC<ManagementSystemDrawerProps> = ({open, o
         onClose();
     };
 
+    const logout = () => {
+        fetch('/api/login/logout', {method: 'POST'})
+            .then(res => {
+                if (res.ok) {
+                    unsetUser()
+                    navigateAndClose('/login')
+                }
+            })
+    }
+
     const renderNavSubItem = (item: BasicRoute, subItem: BasicRoute, index: number) => (
         <List key={index} component="div" disablePadding>
             <ListItem button sx={{ pl: 4 }} onClick={() => navigateAndClose(`${item.path}/${subItem.path}`)}>
@@ -70,7 +82,12 @@ export const ManagementSystemDrawer: FC<ManagementSystemDrawerProps> = ({open, o
                 </IconButton>
             </DrawerHeader>
             <Divider/>
-            <List>{ routes.filter((x): x is BasicRoute => isBasicRoute(x) && x.showInDrawer !== false).map(renderNavItem) }</List>
+            <List>
+                { routes.filter((x): x is BasicRoute => isBasicRoute(x) && x.showInDrawer !== false).map(renderNavItem) }
+                <ListItem button onClick={logout}>
+                    <ListItemText primary={'Logout'}/>
+                </ListItem>
+            </List>
             <Divider/>
         </Drawer>
     )
