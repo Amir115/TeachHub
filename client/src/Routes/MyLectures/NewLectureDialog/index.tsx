@@ -2,7 +2,7 @@ import { Button, Dialog, DialogContent, FormControl, Input, InputAdornment, Stac
 import { Alarm } from '@mui/icons-material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { getMyLectures} from '../../../server-mocks/utils';
-import { LecturePreview, Person } from '../../../types';
+import { Lecture, Person } from '../../../../../common/types';
 import useAuth from '../../../hooks/auth/use-auth';
 import lecturers from '../../../server-mocks/lecturers';
 import lectures from '../../../server-mocks/lectures';
@@ -26,7 +26,7 @@ const NewLectureDialog = ({ open, onClose, setLectures }: NewLectureDialogProps)
   const session = useAuth();
 
   const onSubmit: SubmitHandler<Inputs> = data => {
-    const newLecture: LecturePreview = {...data,
+    const newLecture: Lecture = {...data,
       id: (getMyLectures().length + lectures.length + 1).toString(),
       lecturer: lecturers.find(({id}) => session?.userId) as Person,
       cost: data.price,

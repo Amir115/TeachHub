@@ -3,7 +3,7 @@ import { Button, Grid, Typography } from '@mui/material';
 
 import AddIcon from '@mui/icons-material/Add';
 
-import { LecturePreview } from '../../types';
+import { Lecture } from '../../../../common/types';
 import { LectureCard } from './LectureCard';
 import { Row } from '../../theme/layout';
 import NewLectureDialog from './NewLectureDialog';
@@ -11,7 +11,7 @@ import useLocalStorage from '../../hooks/use-local-storage';
 
 
 const MyLectures = () => {
-  const [lectures, setLectures] = useState<LecturePreview[]>([]);
+  const [lectures, setLectures] = useState<Lecture[]>([]);
   const [isNewLectureDialogOpen, setIsNewLectureDialogOpen] = useState(false);
   const [myLectures, setMyLectures] = useLocalStorage('my-lectures');
 

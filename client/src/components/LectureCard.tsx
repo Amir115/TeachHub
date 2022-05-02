@@ -9,7 +9,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CardActions from "@mui/material/CardActions";
 import Card from "@mui/material/Card";
-import {LecturePreview} from "../types";
+import {Lecture} from "../../../common/types";
 import { Row } from "../theme/layout";
 import { Chip } from "@mui/material";
 
@@ -18,7 +18,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 
 interface LectureCardProps {
-    lecture: LecturePreview
+    lecture: Lecture
 }
 
 export const LectureCard: FC<LectureCardProps> = ({lecture}) => {

@@ -5,11 +5,11 @@ import { CardHeader, Avatar, IconButton, CardMedia, CardContent, Typography, Car
 import EditIcon from '@mui/icons-material/Edit';
 import PersonIcon from '@mui/icons-material/Person';
 
-import { LecturePreview } from '../../types';
+import { Lecture } from '../../../../common/types';
 import { Row } from '../../theme/layout';
 
 interface LectureCardProps {
-    lecture: LecturePreview
+    lecture: Lecture
 }
 
 export const LectureCard: FC<LectureCardProps> = ({ lecture }) => {

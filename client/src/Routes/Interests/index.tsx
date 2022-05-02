@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 import interestsMock from "../../server-mocks/interests";
 import { Column } from "../../theme/layout";
-import { Interest as InterestType } from "../../types";
+import { Interest as InterestType } from "../../../../common/types";
 import useUser from "../../hooks/auth/use-auth";
 
 type ToggleState = (interest: InterestType, state: boolean) => void;

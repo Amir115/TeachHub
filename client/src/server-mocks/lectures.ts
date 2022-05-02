@@ -1,5 +1,5 @@
 import lecturers from "./lecturers";
-import { LecturePreview } from "../types";
+import { Lecture } from "../../../common/types";
 
 export default [{
   id: '1',
@@ -111,4 +111,4 @@ export default [{
   image: '/static/images/lecture8.jpg',
   participants: 16
 }
-] as LecturePreview[];
+] as Lecture[];

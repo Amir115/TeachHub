@@ -1,6 +1,6 @@
 import { Person } from './person';
 
-export interface LecturePreview {
+export interface Lecture {
   id: string
   name: string
   topic: string

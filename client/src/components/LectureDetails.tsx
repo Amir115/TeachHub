@@ -2,11 +2,11 @@ import moment from 'moment'
 import {Column, Row} from '../theme/layout';
 import {Card, CardContent, CardHeader, CardMedia, Chip, Typography} from '@mui/material';
 import React, {FC} from "react";
-import {LecturePreview} from "../types";
+import {Lecture} from "../../../common/types";
 import {ReactJSXElement} from "@emotion/react/types/jsx-namespace";
 
 interface LectureDetailsProps {
-  lecture: LecturePreview;
+  lecture: Lecture;
   action: ReactJSXElement
 }
 

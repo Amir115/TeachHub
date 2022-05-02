@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
 
 import { CenteredColumn, Column, Row } from '../../theme/layout';
-import { LecturePreview } from '../../types';
+import { Lecture } from '../../../../common/types';
 import { LectureCard } from '../../components/LectureCard';
 
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
@@ -25,14 +25,14 @@ interface Tag {
 
 const Home = () => {
     const isLoadingLectures = false; // TODO: Server
-    const [lectures, setLectures] = useState<LecturePreview[]>([]);
-    const [subscribedLectures, setSubscribedLectures] = useState<LecturePreview[]>([]);
+    const [lectures, setLectures] = useState<Lecture[]>([]);
+    const [subscribedLectures, setSubscribedLectures] = useState<Lecture[]>([]);
     const [searchKey, setSearchKey] = useState('');
     const [tags, setTags] = useState<Tag[]>([]);
     const [currentLectureIndex, setCurrentLectureIndex] = useState(0);
 
     const navigate = useNavigate();
-    const currentLecture: LecturePreview | undefined = subscribedLectures[currentLectureIndex]
+    const currentLecture: Lecture | undefined = subscribedLectures[currentLectureIndex]
 
     // TODO: fetch from server
     //const subscribedLecturesIds
@@ -74,7 +74,7 @@ const Home = () => {
         // TODO: replace with real server request
         setTimeout(() => {
             setLectures(lecturesMock);
-            setSubscribedLectures(getSubscribedLecturesIds().map(id => lecturesMock.find(x => x.id === id)).filter((x): x is LecturePreview => Boolean(x)) || []);
+            setSubscribedLectures(getSubscribedLecturesIds().map(id => lecturesMock.find(x => x.id === id)).filter((x): x is Lecture => Boolean(x)) || []);
             setCurrentLectureIndex(0);
             setTags(tagsMock.map(value => ({ value, selected: false })));
         }, 300);

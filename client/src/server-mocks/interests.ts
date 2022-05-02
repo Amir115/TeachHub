@@ -1,4 +1,4 @@
-import { Interest } from "types";
+import { Interest } from "../../../common/types";
 
 export default [
     { id: 1, name: 'Pizza', image: '/static/images/lecture1.jpg'},

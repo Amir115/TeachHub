@@ -8,7 +8,7 @@ import {Column, Row} from '../../theme/layout';
 
 import lectures from "../../server-mocks/lectures";
 import {getSubscribedLecturesIds} from "../../server-mocks/utils";
-import {LecturePreview} from "../../types";
+import {Lecture} from "../../../../common/types";
 import useAuth from "../../hooks/auth/use-auth";
 import useCameraStream from './use-camera-stream'
 
@@ -27,7 +27,7 @@ const WatchLecture = () => {
 
   const usersMediaSourcesSnapshot = useRef(createMediaSourcesSnapshot())
 
-  const [lecture, setLecture] = useState<LecturePreview>();
+  const [lecture, setLecture] = useState<Lecture>();
   const isOwner = lecture?.lecturer.id === session?.userId;
 
   const findUserSocket = (userId: string) => Object.keys(usersMediaSources)
@@ -35,7 +35,7 @@ const WatchLecture = () => {
 
   useEffect(() => {
     // TODO: fetch from server
-    const currentlecture = lectures.find(x => x.id === id) as LecturePreview;
+    const currentlecture = lectures.find(x => x.id === id) as Lecture;
 
     setLecture(currentlecture);
 
