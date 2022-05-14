@@ -8,33 +8,35 @@ import {
   Stack,
   Typography
 } from '@mui/material';
-import ProfileBullets from './ProfileBullets';
 import { useNavigate } from 'react-router-dom';
+import {UserInterestsSection} from "./UserInterestsSection";
+import interests from "../../server-mocks/interests";
+import {useState} from "react";
 
 const Profile = () => {
   const session = useAuth(); // Change that to get user from server with his photo and etc..
   const navigate = useNavigate();
-  const intrests = ['Baking', 'Gym', 'Cooking', 'Js'];
-  const knowledge = ['Baking', 'Cooking'];
+
+  // TODO: use real user data
+  const [userInterests, setUserInterests] = useState([interests[0], interests[1]]);
+  const [userKnowledge, setUserKnowledge] = useState([interests[3], interests[5]]);
 
   return <Grid container spacing={1} p={1} justifyContent='space-between' height='100%'>
     <Stack>
       <Typography variant='h4'>My profile</Typography>
       <Typography variant='h4'>{session?.username}</Typography>
       <Stack direction='row' spacing={2} my={2}>
-        <Column>
+        <Column sx={{flex:1}}>
           <Typography variant='h5'>About me:</Typography>
           <Card sx={{ minWidth: 360, height: 160, backgroundColor: '#3f3f3f' }} />
+          <UserInterestsSection interests={userInterests} title='Intrests' onEdit={setUserInterests}/>
         </Column>
-        <Column>
+        <Column sx={{flex: 1}}>
           <Typography variant='h5'>My education:</Typography>
           <Card sx={{ minWidth: 420, height: 160, backgroundColor: '#3f3f3f' }} />
+          <UserInterestsSection interests={userKnowledge} title='Knowledge' onEdit={setUserKnowledge} />
         </Column>
       </Stack>
-      <Row sx={{ justifyContent: 'space-around' }}>
-        <ProfileBullets bullets={intrests} title='Intrests' />
-        <ProfileBullets bullets={knowledge} title='Knowledge' />
-      </Row>
     </Stack>
     <Column sx={{ justifyContent: 'space-between', height: '100%'}}>
       <Card sx={{ minWidth: 180, height: '40%' }}>
