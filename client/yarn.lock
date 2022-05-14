@@ -548,6 +548,28 @@
     prop-types "^15.7.2"
     react-is "^17.0.2"
 
+"@paypal/paypal-js@^5.0.5":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@paypal/paypal-js/-/paypal-js-5.0.5.tgz#f2f61e6ef414847fdcae847054039a05454df8dd"
+  integrity sha512-OV+0Z2MgHVj6dQiE58x9vq6upWWvajbyuwYlDQ4aBkwj6sLLsdkXO8HDuYJPYoVzbX3+/Di6fNKvlUlCJiv+zA==
+  dependencies:
+    promise-polyfill "^8.2.3"
+
+"@paypal/react-paypal-js@^7.7.0":
+  version "7.7.0"
+  resolved "https://registry.yarnpkg.com/@paypal/react-paypal-js/-/react-paypal-js-7.7.0.tgz#0e4076aef6da3b71938904c7cd98da66ccd3fdfd"
+  integrity sha512-f+SXVtyO4Yr0IkV6UVAlHC3GlpRxTNyP9EUUFLhBjyW0z9paMJ47XsG6QcqSoj2Y+YEpdVTVhfvji2K0Gpy7lA==
+  dependencies:
+    "@paypal/paypal-js" "^5.0.5"
+    "@paypal/sdk-constants" "^1.0.116"
+
+"@paypal/sdk-constants@^1.0.116":
+  version "1.0.121"
+  resolved "https://registry.yarnpkg.com/@paypal/sdk-constants/-/sdk-constants-1.0.121.tgz#51c416107b805cd5cf3e8a1d192c00b038fba634"
+  integrity sha512-XNEpRzwbRXvmazOT/DmhmQ+3+Eg+O+yGpAiM6+gwBHYnBqDTZ8FKSIYTwvmdYnP9zrCFVslF965fdvsowboAqQ==
+  dependencies:
+    hi-base32 "^0.5.0"
+
 "@popperjs/core@^2.11.2":
   version "2.11.3"
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.11.3.tgz"
@@ -983,6 +1005,11 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
+hi-base32@^0.5.0:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/hi-base32/-/hi-base32-0.5.1.tgz#1279f2ddae2673219ea5870c2121d2a33132857e"
+  integrity sha512-EmBBpvdYh/4XxsnUybsPag6VikPYnN30td+vQk+GI3qpahVEG9+gTkG0aXVxTjBqQ5T6ijbWIu77O+C5WFWsnA==
+
 history@^5.2.0:
   version "5.3.0"
   resolved "https://registry.npmjs.org/history/-/history-5.3.0.tgz"
@@ -1143,6 +1170,11 @@ postcss@^8.4.6:
     nanoid "^3.3.1"
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
+
+promise-polyfill@^8.2.3:
+  version "8.2.3"
+  resolved "https://registry.yarnpkg.com/promise-polyfill/-/promise-polyfill-8.2.3.tgz#2edc7e4b81aff781c88a0d577e5fe9da822107c6"
+  integrity sha512-Og0+jCRQetV84U8wVjMNccfGCnMQ9mGs9Hv78QFe+pSDD3gWTpz0y+1QCuxy5d/vBFuZ3iwP2eycAkvqIMPmWg==
 
 prop-types@15.x, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
