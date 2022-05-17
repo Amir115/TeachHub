@@ -15,7 +15,7 @@ export const getAll: RequestHandler = async (req, res, next) => {
 
 export const getById: RequestHandler = async (req, res, next) => {
   try {
-    const lecture = await Model.findById(req.params.id);
+    const lecture = await Model.findById(req.params.id).populate('lecturer');
 
     return lecture ? res.send(lecture) : res.status(404).send({
       message: `lecture with id ${req.params.id} not exists`,

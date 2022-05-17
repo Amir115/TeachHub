@@ -10,7 +10,7 @@ import Home from './Home';
 import Auth, { Login, SignUp } from './Auth';
 
 import TeachHub from '../TeachHub';
-import Lecture from './Lecture';
+import LecturePage from './Lecture';
 import Subscribe from './Subscribe';
 import Profile from './Profile';
 import Interests from './Interests';
@@ -50,14 +50,14 @@ export const routes: Route[] = [
         ]
     },
     { name: 'Interests', path: 'auth/interests', Component: Interests, showInDrawer: false },
-    { name: 'Lecture', path: 'lectures/:id', Component: Lecture, showInDrawer: false },
+    { name: 'Lecture', path: 'lectures/:id', Component: LecturePage, showInDrawer: false },
     {
         name: 'SubscribeLecture',
         path: 'lectures/:id/subscribe',
         Component: Subscribe,
         showInDrawer: false,
     },
-    {name: 'Lecture', path: 'lectures/:id', Component: Lecture, showInDrawer: false},
+    {name: 'Lecture', path: 'lectures/:id', Component: LecturePage, showInDrawer: false},
     {name: 'Profile', path: 'profile', Component: Profile, showInDrawer: false},
     {name: 'MyLectures', path: 'my-lectures', Component: MyLectures, showInDrawer: false},
     {name: 'LecturerAbout', path: 'lecturer/:id', Component: LecturerAbout, showInDrawer: false},
