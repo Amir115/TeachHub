@@ -1,44 +1,70 @@
-import { Button, Dialog, DialogContent, FormControl, Input, InputAdornment, Stack, TextField } from '@mui/material';
-import { Alarm } from '@mui/icons-material';
+import {
+  Button,
+  Dialog,
+  DialogContent, IconButton,
+  Input,
+  InputAdornment, InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField
+} from '@mui/material';
+import { Alarm, PhotoCamera } from '@mui/icons-material';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { getMyLectures} from '../../../server-mocks/utils';
-import { Lecture, Person } from '../../../../../common/types';
+import { Person } from '../../../../../common/types';
 import useAuth from '../../../hooks/auth/use-auth';
 import lecturers from '../../../server-mocks/lecturers';
-import lectures from '../../../server-mocks/lectures';
+import { NewLecture } from '../../../../../common/types/lecture/new-lecture';
+import { Column } from '../../../theme/layout';
+import { Tags } from '../../../../../common/types/tags';
+import TagsMock from '../../../server-mocks/tags';
+import { styled } from '@mui/material/styles';
+import axios from 'axios';
 
 type Inputs = {
   subject: string,
   description: string,
   date: Date,
   price: number,
-  duration: number
+  duration: number,
+  topic: string,
+  tags: Tags[],
+  image: FileList
 };
 
 interface NewLectureDialogProps {
   open: boolean,
-  onClose: () => void,
-  setLectures: (lectures: string) => void,
+  onClose: () => void
 }
 
-const NewLectureDialog = ({ open, onClose, setLectures }: NewLectureDialogProps) => {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
+const PhotoInput = styled('input')({
+  display: 'none',
+});
+
+const NewLectureDialog = ({ open, onClose }: NewLectureDialogProps) => {
+  const { register, handleSubmit } = useForm<Inputs>();
   const user = useAuth();
 
-  const onSubmit: SubmitHandler<Inputs> = data => {
-    const newLecture: Lecture = {...data,
-      id: (getMyLectures().length + lectures.length + 1).toString(),
-      lecturer: lecturers.find(({id}) => user?.id === id) as Person,
+  const onSubmit: SubmitHandler<Inputs> = async data => {
+    const form = new FormData();
+    form.append('image', data.image[0]);
+
+    const newLecture = {
+      ...data,
+      lecturer: user,
       cost: data.price,
       name: data.subject,
-      image: '/static/images/lecture1.jpg',
-      information: data.description,
+	      information: data.description,
       participants: 0,
-      topic: 'history',
-      tags: ['baking']
+      topic: data.topic,
+      tags: data.tags
     };
 
-    setLectures(JSON.stringify([...getMyLectures(), newLecture]));
+    form.append('lecture', JSON.stringify(newLecture));
+
+    console.log(form);
+    await axios.post('/api/lectures/', form);
+
     onClose();
   }
 
@@ -47,7 +73,18 @@ const NewLectureDialog = ({ open, onClose, setLectures }: NewLectureDialogProps)
       <DialogContent>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={2}>
-            <Input placeholder={'subject'} {...register("subject")} />
+            <Stack spacing={1} direction={'row'}>
+              <Input placeholder={'subject'} {...register("subject")} fullWidth />
+              <Input placeholder={'topic'} {...register("topic")} fullWidth />
+              <Column>
+                <InputLabel>Tags</InputLabel>
+                <Select multiple {...register('tags')} sx={{ width: 400 }} defaultValue={[]}>
+                  {TagsMock.map((x, i) => (
+                    <MenuItem key={i} value={x}>{x}</MenuItem>
+                  ))}
+                </Select>
+              </Column>
+            </Stack>
             <TextField placeholder={'Describe what you want to talk about…'}
                        multiline
                        sx={{ maxHeight: 180, overflow: 'auto' }}
@@ -55,7 +92,7 @@ const NewLectureDialog = ({ open, onClose, setLectures }: NewLectureDialogProps)
 
             />
             <Stack direction='row' spacing={2}>
-              <Input type={'date'} {...register("date")}/>
+              <Input type={'date'} {...register("date")} />
               <Input placeholder={'Duration'} type={'number'} {...register("duration")} endAdornment={
                 <InputAdornment position="start">
                   <Alarm />
@@ -65,7 +102,13 @@ const NewLectureDialog = ({ open, onClose, setLectures }: NewLectureDialogProps)
                 <InputAdornment position="start">
                   $
                 </InputAdornment>
-              }/>
+              } />
+              <label htmlFor="icon-button-file">
+                <PhotoInput accept="image/*" id="icon-button-file" type="file" {...register("image")}/>
+                <IconButton color="primary" aria-label="upload picture" component="span">
+                  <PhotoCamera />
+                </IconButton>
+              </label>
             </Stack>
             <Stack direction='row' spacing={2}>
               <Button type="submit" variant='contained'>Save</Button>

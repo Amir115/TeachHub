@@ -35,7 +35,7 @@ const WatchLecture = () => {
 
   useEffect(() => {
     // TODO: fetch from server
-    const currentlecture = lectures.find(x => x.id === id) as Lecture;
+    const currentlecture = lectures.find(x => x._id === id) as Lecture;
 
     setLecture(currentlecture);
 

@@ -19,10 +19,10 @@ const Subscribe = () => {
     const [expirationDate, setExpirationDate] = useState<Date | undefined | null>();
 
     // TODO: fetch from server
-    const lecture = lectures.find(x => x.id === id);
+    const lecture = lectures.find(x => x._id === id);
 
     const handleSubscribe = () => {
-        localStorage.setItem('lectures', JSON.stringify([...getSubscribedLecturesIds(), lecture?.id]));
+        localStorage.setItem('lectures', JSON.stringify([...getSubscribedLecturesIds(), lecture?._id]));
         
         openMessage('Subscribed successfully!', 'success');
         navigate('../');

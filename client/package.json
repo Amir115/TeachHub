@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@paypal/react-paypal-js": "^7.7.0",
+    "axios": "^0.27.2",
     "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -16,7 +17,8 @@
     "react-resizable": "^3.0.4",
     "react-share": "^4.4.0",
     "react-webcam": "^7.0.1",
-    "socket.io-client": "^4.4.1"
+    "socket.io-client": "^4.4.1",
+    "ts-transformer-keys": "^0.4.3"
   },
   "devDependencies": {
     "@date-io/moment": "^2.13.1",

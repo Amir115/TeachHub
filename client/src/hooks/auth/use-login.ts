@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { setUser } from '../../auth';
+import axios from 'axios';
 
 export type LoginUIResult = [(email: string, password: string) => Promise<void>, boolean, string]
 
@@ -11,19 +12,13 @@ function useLogin(): LoginUIResult {
         setIsLoading(true)
 
         try {
-            const res = await fetch('/api/login/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({username: email, password})
-            })
+            const res = await axios.post('/api/login/', {username: email, password});
 
-            if (!res.ok) {
+            if (res.status !== 200) {
                 throw Error('Cannot login')
             }
 
-            const loggedInUser = await res.json()
+            const loggedInUser = await res.data;
             setUser(loggedInUser);
         } catch (e: any) {
             setError(e.message)

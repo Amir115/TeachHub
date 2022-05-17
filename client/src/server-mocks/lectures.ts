@@ -3,7 +3,7 @@ import { Lecture } from "../../../common/types";
 
 // TODO: Fix duration
 export default [{
-  id: '1',
+  _id: '1',
   name: "The art of pizza",
   topic: "history",
   lecturer: lecturers[0],
@@ -16,7 +16,7 @@ export default [{
   participants: 10
 },
 {
-  id: '2',
+  _id: '2',
   name: "MasterJS",
   topic: "js",
   lecturer: lecturers[0],
@@ -29,7 +29,7 @@ export default [{
   participants: 15
 },
 {
-  id: '3',
+  _id: '3',
   name: "How to make money",
   topic: "money",
   lecturer: lecturers[0],
@@ -44,7 +44,7 @@ export default [{
   participants: 10
 },
 {
-  id: '4',
+  _id: '4',
   name: "Breaking Windows",
   topic: "innovation",
   lecturer: lecturers[0],
@@ -59,7 +59,7 @@ export default [{
   participants: 13
 },
 {
-  id: '5',
+  _id: '5',
   name: "All about protein",
   topic: "bodybuilding",
   lecturer: lecturers[0],
@@ -72,7 +72,7 @@ export default [{
   participants: 17
 },
 {
-  id: '6',
+  _id: '6',
   name: "Technology Over History",
   topic: "history",
   lecturer: lecturers[0],
@@ -85,7 +85,7 @@ export default [{
   participants: 20
 },
 {
-  id: '7',
+  _id: '7',
   name: "Chess and Real Estate",
   topic: "real estate",
   lecturer: lecturers[0],
@@ -100,7 +100,7 @@ export default [{
   participants: 23
 },
 {
-  id: '8',
+  _id: '8',
   name: 'History Of Sushi',
   topic: 'sushi',
   lecturer: lecturers[1],

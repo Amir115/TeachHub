@@ -13,7 +13,7 @@ export default defineConfig({
     https: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:8080/'
+        target: 'http://localhost:8080'
       }
     }
   }

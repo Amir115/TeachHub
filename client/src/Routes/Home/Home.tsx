@@ -41,7 +41,7 @@ const Home = () => {
         <Button
             variant='contained'
             color='secondary'
-            onClick={() => navigate(`watch/${currentLecture?.id}`)}
+            onClick={() => navigate(`watch/${currentLecture?._id}`)}
         >
             Enter Lecture
         </Button>
@@ -74,7 +74,7 @@ const Home = () => {
         // TODO: replace with real server request
         setTimeout(() => {
             setLectures(lecturesMock);
-            setSubscribedLectures(getSubscribedLecturesIds().map(id => lecturesMock.find(x => x.id === id)).filter((x): x is Lecture => Boolean(x)) || []);
+            setSubscribedLectures(getSubscribedLecturesIds().map(id => lecturesMock.find(x => x._id === id)).filter((x): x is Lecture => Boolean(x)) || []);
             setCurrentLectureIndex(0);
             setTags(tagsMock.map(value => ({ value, selected: false })));
         }, 300);
@@ -174,7 +174,7 @@ const Home = () => {
                         </Stack>
                         <Grid container spacing={2} sx={{ paddingY: 4, width: '100%' }}>
                             {lectures?.map(lecture => (
-                                <Grid key={lecture.id} item xs={3}>
+                                <Grid key={lecture._id} item xs={3}>
                                     <LectureCard lecture={lecture} />
                                 </Grid>
                             ))}

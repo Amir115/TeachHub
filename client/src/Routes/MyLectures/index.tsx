@@ -7,22 +7,20 @@ import { Lecture } from '../../../../common/types';
 import { LectureCard } from './LectureCard';
 import { Row } from '../../theme/layout';
 import NewLectureDialog from './NewLectureDialog';
-import useLocalStorage from '../../hooks/use-local-storage';
-
+import axios from 'axios';
+import useAuth from '../../hooks/auth/use-auth';
 
 const MyLectures = () => {
   const [lectures, setLectures] = useState<Lecture[]>([]);
   const [isNewLectureDialogOpen, setIsNewLectureDialogOpen] = useState(false);
-  const [myLectures, setMyLectures] = useLocalStorage('my-lectures');
+  const session = useAuth();
 
   useEffect(() => {
-    // TODO: replace with real server request
-    setTimeout(() => {
-      if (myLectures) {
-        setLectures(JSON.parse(myLectures));
-      }
-    }, 300);
-  }, [myLectures]);
+    axios.get<Lecture[]>('/api/lectures')
+      .then(({ data }) => {
+        setLectures(data.filter(({lecturer}) => lecturer.id === session?.id));
+      })
+  }, []);
 
   return (
     <Grid container spacing={1} p={1} justifyContent={'space-between'} height={'100%'}>
@@ -31,7 +29,7 @@ const MyLectures = () => {
       </Row>
       <Grid container spacing={2} sx={{ paddingY: 4, width: '100%' }}>
         {lectures?.map(lecture => (
-          <Grid key={lecture.id} item xs={3}>
+          <Grid key={lecture._id} item xs={3}>
             <LectureCard lecture={lecture} />
           </Grid>
         ))}
@@ -46,8 +44,7 @@ const MyLectures = () => {
         {'New Lecture'}
       </Button>
       <NewLectureDialog open={isNewLectureDialogOpen}
-                        onClose={() => setIsNewLectureDialogOpen(false)}
-                        setLectures={setMyLectures} />
+                        onClose={() => setIsNewLectureDialogOpen(false)} />
     </Grid>
   )
 }

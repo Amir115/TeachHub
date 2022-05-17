@@ -1,7 +1,7 @@
-import { Person } from './person';
+import { Person } from '../person';
 
-export interface Lecture {
-  id: string
+export interface NewLecture {
+  _id?: string
   name: string
   topic: string
   lecturer: Person
@@ -10,6 +10,6 @@ export interface Lecture {
   date: Date
   cost: number
   tags: string[]
-  image: string
+  image: string | ArrayBuffer
   participants: number
 }

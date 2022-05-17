@@ -5,6 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "dev": "nodemon",
+    "debug": "nodemon --exec node --inspect=0.0.0.0:9229 --require ts-node/register ./index.ts",
     "start": "ts-node ./index.ts"
   },
   "author": "",
@@ -27,6 +28,8 @@
     "express-session": "^1.17.3",
     "lodash": "^4.17.21",
     "mongoose": "^6.3.1",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.4",
     "nodemon": "^2.0.15",
     "passport": "^0.5.2",
     "passport-local": "^1.0.0",
@@ -35,5 +38,8 @@
     "ts-node": "^10.7.0",
     "typescript": "^4.6.4",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/multer": "^1.4.7"
   }
 }

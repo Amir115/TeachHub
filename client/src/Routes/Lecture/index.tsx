@@ -11,7 +11,7 @@ const Lecture = () => {
   const navigate = useNavigate();
 
   // TODO: fetch from server
-  const lecture = lectures.find(x => x.id === id);
+  const lecture = lectures.find(x => x._id === id);
 
   const subscribeButton = <Button variant='contained' color='secondary' onClick={() => navigate(`subscribe`)}>Subscribe Now</Button>;
   const author = lecture && `${lecture.lecturer.firstName} ${lecture.lecturer.lastName}`;

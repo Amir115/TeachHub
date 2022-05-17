@@ -16,7 +16,7 @@ export const LectureCard: FC<LectureCardProps> = ({ lecture }) => {
     const navigate = useNavigate();
 
     return (
-        <Card sx={{ cursor: 'pointer', height: '85%' }} onClick={() => navigate(`../lectures/${lecture.id}`)}>
+        <Card sx={{ cursor: 'pointer', height: '85%' }} onClick={() => navigate(`../lectures/${lecture._id}`)}>
             <CardHeader
                 title={lecture.name}
                 subheader={`By: ${lecture.lecturer.firstName} ${lecture.lecturer.lastName}`}

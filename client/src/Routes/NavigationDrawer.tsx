@@ -15,6 +15,7 @@ import { styled, useTheme } from "@mui/material/styles";
 
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import axios from 'axios';
 
 const DrawerHeader = styled('div')(({theme}) => ({
     display: 'flex',
@@ -42,9 +43,9 @@ export const ManagementSystemDrawer: FC<ManagementSystemDrawerProps> = ({open, o
     };
 
     const logout = () => {
-        fetch('/api/login/logout', {method: 'POST'})
+        axios.post('/api/login/logout', {})
             .then(res => {
-                if (res.ok) {
+                if (res.status === 200) {
                     unsetUser()
                     navigateAndClose('/login')
                 }

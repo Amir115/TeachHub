@@ -2,10 +2,6 @@ import { model, Schema } from 'mongoose';
 import { Lecture} from '../../../common/types';
 
 const schema = new Schema<Lecture>({
-  id: {
-    type: String,
-    required: true
-  },
   information: {
     type: String,
     required: true
