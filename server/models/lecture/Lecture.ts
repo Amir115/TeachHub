@@ -16,7 +16,8 @@ const schema = new Schema<Lecture>({
   },
   image: {
     data: Buffer,
-    contentType: String
+    contentType: String,
+    url: String
   },
   date: {
     type: Date,

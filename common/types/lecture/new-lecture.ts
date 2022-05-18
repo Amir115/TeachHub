@@ -1,5 +1,10 @@
 import { Person } from '../person';
 
+interface Image {
+  url: string,
+  data: string | ArrayBuffer
+}
+
 export interface NewLecture {
   _id?: string
   name: string
@@ -10,6 +15,6 @@ export interface NewLecture {
   date: Date
   cost: number
   tags: string[]
-  image: string | ArrayBuffer
+  image: Image
   participants: number
 }

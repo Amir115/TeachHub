@@ -16,6 +16,7 @@ import { sessionMiddleware, passportMiddleware, passportSessionMiddleware } from
 export default () => {
     const app = express()
     const STATIC_FILES_DIR = path.resolve(__dirname, '../client/dist')
+    const UPLOADS_DIR = path.resolve(__dirname, '../uploads')
 
     const listenUrl = process.env.LISTEN_URL || '0.0.0.0';
     const port = Number(process.env.PORT) || 8080;
@@ -35,6 +36,7 @@ export default () => {
     // END Passport configuration
 
     app.use(express.static(STATIC_FILES_DIR))
+    app.use(express.static(UPLOADS_DIR));
 
     app.use('/api', apiRouter)
 

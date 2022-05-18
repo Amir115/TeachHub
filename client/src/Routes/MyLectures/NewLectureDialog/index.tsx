@@ -11,10 +11,7 @@ import {
 } from '@mui/material';
 import { Alarm, PhotoCamera } from '@mui/icons-material';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Person } from '../../../../../common/types';
 import useAuth from '../../../hooks/auth/use-auth';
-import lecturers from '../../../server-mocks/lecturers';
-import { NewLecture } from '../../../../../common/types/lecture/new-lecture';
 import { Column } from '../../../theme/layout';
 import { Tags } from '../../../../../common/types/tags';
 import TagsMock from '../../../server-mocks/tags';

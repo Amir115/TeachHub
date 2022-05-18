@@ -33,7 +33,7 @@ export const LectureCard: FC<LectureCardProps> = ({ lecture }) => {
                     </Row>
                 }
             />
-            <CardMedia component={'img'} sx={{ height: '40%' }} image={lecture.image} />
+            <CardMedia component={'img'} sx={{ height: '40%' }} src={lecture.image.url} />
             <CardContent>
                 <Typography variant={'body2'} color={'text.secondary'}>
                     {lecture.information}

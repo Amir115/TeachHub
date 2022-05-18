@@ -30,7 +30,8 @@ export const insert: RequestHandler = async (req, res, next) => {
     const img = fs.readFileSync(`uploads/${req.file.filename}`);
     const final_img = {
       contentType:req.file.mimetype,
-      data: img
+      data: img,
+      url: `uploads/${req.file.originalname}`
     };
 
     const lecture = JSON.parse(req.body.lecture);
