@@ -1,7 +1,7 @@
 import path from 'path';
 import http from 'http';
 import fs from 'fs';
-import express from 'express';
+import express, {RequestHandler} from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
@@ -12,9 +12,9 @@ import PersonModel from '../models/person/Person'
 
 import createSocketIo from './socket';
 import apiRouter from '../routes'
-import { sessionMiddleware, passportMiddleware, passportSessionMiddleware } from '../middlwares/auth';
+import { passportMiddleware, passportSessionMiddleware } from '../middlwares/auth';
 
-export default () => {
+export default (mongoSessionMiddleware: RequestHandler) => {
     const app = express()
     const STATIC_FILES_DIR = path.resolve(__dirname, '../../client/dist')
     const UPLOADS_DIR = path.resolve(__dirname, '../uploadsRoot')
@@ -27,7 +27,7 @@ export default () => {
     app.use(bodyParser.urlencoded({extended: true}))
     
     // START Passport configuration
-    app.use(sessionMiddleware);
+    app.use(mongoSessionMiddleware);
     app.use(passportMiddleware);
     app.use(passportSessionMiddleware);
     
@@ -56,7 +56,7 @@ export default () => {
     }
 
     const server = http.createServer(app);
-    createSocketIo(server);
+    createSocketIo(server, mongoSessionMiddleware);
 
     return new Promise<void>(resolve => {
         server.listen(port, listenUrl, undefined, () => {

@@ -17,6 +17,9 @@ export default defineConfig({
       },
       '/uploads': {
         target: 'http://localhost:8080'
+      },
+      '/socket.io': {
+        target: 'http://localhost:8080'
       }
     }
   }

@@ -1,6 +1,7 @@
-import {useState, useEffect, useRef, useCallback} from 'react';
-import { io, Socket } from "socket.io-client";
+import {useState, useEffect, useRef} from 'react';
+import { Socket } from "socket.io-client";
 import omit from 'lodash/omit';
+
 import { USED_MIME_TYPE } from './codecs';
 import useMediaRecorder from './use-media-recorder';
 
@@ -12,16 +13,14 @@ const useMapRef = <T>() => {
     return mapRef.current
 }
 
-const useCameraStream = (outgoingStream: MediaStream | null, streamPath: string): [() => () => void, Partial<Record<string, UserMediaSource>>] => {
-    const socketRef = useRef<Socket | null>(null)
-    
+const useCameraStream = (socket: Socket | null, outgoingStream: MediaStream | null): [() => () => void, Partial<Record<string, UserMediaSource>>] => {
     const usersBufferPendingOperations = useMapRef<((buffer: SourceBuffer) => void | true)[]>()
     const usersSourceBuffers = useMapRef<SourceBuffer>()
     
     const [usersMediaSources, setUsersMediaSources] = useState<Record<string, UserMediaSource>>({})
     const usersMediaSourcesRef = useRef(usersMediaSources)
     
-    const mediaRecorder = useMediaRecorder(outgoingStream, (buffer, headersSent) => socketRef.current?.emit('userimage', buffer, !headersSent))
+    const mediaRecorder = useMediaRecorder(outgoingStream, (buffer, headersSent) => socket?.emit('userimage', buffer, !headersSent))
 
     const flushUserSourceBufferQueue = (userSocketId: string) => {
         const userBuffer = usersSourceBuffers[userSocketId]
@@ -62,8 +61,7 @@ const useCameraStream = (outgoingStream: MediaStream | null, streamPath: string)
     }
 
     const setupSocket = () => {
-        const socket = io(streamPath)
-        socket.connect()
+        if (!socket) return;
 
         const handleUserImage = (chunk: ArrayBuffer, userSocketId: string, removeOldChunks: boolean = false) => {
             let userOperationsQueue = usersBufferPendingOperations[userSocketId];
@@ -106,20 +104,16 @@ const useCameraStream = (outgoingStream: MediaStream | null, streamPath: string)
             setUsersMediaSources(existingMediaSources => ({...omit(existingMediaSources, userSocketId)}));
         }
 
-        socket.on('userjoin', handleUserJoin)
-        socket.on('userimage', handleUserImage)
-        socket.on('userleft', handleUserLeft)
+        socket?.on('userjoin', handleUserJoin)
+        socket?.on('userimage', handleUserImage)
+        socket?.on('userleft', handleUserLeft)
 
         return socket;
     }
 
     useEffect(() => {
-        socketRef.current = setupSocket();
-
-        return () => {
-            socketRef.current?.disconnect();
-        }
-    }, []);
+        setupSocket();
+    }, [socket]);
 
     useEffect(() => {
         usersMediaSourcesRef.current = usersMediaSources

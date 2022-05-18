@@ -14,6 +14,11 @@ const schema = new Schema<ChatMessage>({
     type: String,
     ref: 'Person',
     required: true
+  },
+  lecture: {
+    type: String,
+    ref: 'Lecture',
+    required: true
   }
 });
 

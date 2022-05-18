@@ -1,7 +1,9 @@
 import { Person } from "./person"
+import { Lecture } from './lecture/lecture';
 
 export interface ChatMessage {
     id: string,
     text: string,
-    user: Person
+    user: Person,
+    lecture: Lecture
 }

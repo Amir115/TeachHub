@@ -43,7 +43,10 @@ const useMediaRecorder = (stream: MediaStream | null, handleNewData: (buffer: Ar
 
     const stop = () => {
         resetIntervalRef.current && clearInterval(resetIntervalRef.current);
-        mediaRecorderRef.current?.stop()
+
+        if (mediaRecorderRef.current?.state == 'recording') {
+            mediaRecorderRef.current?.stop()
+        }
     }
 
     return {start, stop}
