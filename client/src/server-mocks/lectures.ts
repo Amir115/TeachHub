@@ -12,7 +12,7 @@ export default [{
   cost: 10,
   // duration: '1h',
   tags: ['history', 'baking'],
-  image: '/static/images/lecture1.jpg',
+  image: { url: '/static/images/lecture1.jpg' },
   participants: 10
 },
 {
@@ -25,7 +25,7 @@ export default [{
   cost: 10,
   // duration: '1h',
   tags: ['JS', 'programming'],
-  image: '/static/images/lecture2.jpg',
+  image: { url: '/static/images/lecture2.jpg' },
   participants: 15
 },
 {
@@ -40,7 +40,7 @@ export default [{
   cost: 10,
   //duration: '1h',
   tags: ['economics', 'money'],
-  image: '/static/images/lecture3.jpg',
+  image: {url: '/static/images/lecture3.jpg' },
   participants: 10
 },
 {
@@ -55,7 +55,7 @@ export default [{
   cost: 10,
   // duration: '1h',
   tags: ['innovation', 'high tech'],
-  image: '/static/images/lecture4.jpg',
+  image: {url: '/static/images/lecture4.jpg' },
   participants: 13
 },
 {
@@ -68,7 +68,7 @@ export default [{
   cost: 10,
   // duration: '1h',
   tags: ['body building', 'sport'],
-  image: '/static/images/lecture5.jpg',
+  image: {url: '/static/images/lecture5.jpg'},
   participants: 17
 },
 {
@@ -81,7 +81,7 @@ export default [{
   cost: 10,
   // duration: '1h',
   tags: ['history', 'technology', 'innovation'],
-  image: '/static/images/lecture6.jpg',
+  image: {url: '/static/images/lecture6.jpg' },
   participants: 20
 },
 {
@@ -96,7 +96,7 @@ export default [{
   cost: 10,
   // duration: '1h',
   tags: ['real estate', 'money'],
-  image: '/static/images/lecture7.jpg',
+  image: {url: '/static/images/lecture7.jpg' },
   participants: 23
 },
 {
@@ -109,7 +109,7 @@ export default [{
   // duration: '2h',
   cost: 40,
   tags: ['history', 'cooking'],
-  image: '/static/images/lecture8.jpg',
+  image: {url: '/static/images/lecture8.jpg'},
   participants: 16
 }
 ] as Lecture[];

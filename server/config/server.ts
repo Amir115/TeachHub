@@ -15,7 +15,7 @@ import { sessionMiddleware, passportMiddleware, passportSessionMiddleware } from
 
 export default () => {
     const app = express()
-    const STATIC_FILES_DIR = path.resolve(__dirname, '../client/dist')
+    const STATIC_FILES_DIR = path.resolve(__dirname, '../../client/dist')
     const UPLOADS_DIR = path.resolve(__dirname, '../uploads')
 
     const listenUrl = process.env.LISTEN_URL || '0.0.0.0';

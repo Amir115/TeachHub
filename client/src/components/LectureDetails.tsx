@@ -14,7 +14,7 @@ export const LectureDetails: FC<LectureDetailsProps> = ({lecture, action}) => {
   return <Card sx={{p: 2, backgroundColor: 'primary.main', color: 'white', flex:1}}>
     <Row>
       <Column flex={1} sx={{overflow: 'hidden'}}>
-        <CardMedia component='img' image={lecture.image} sx={{borderRadius: 2, height: '-webkit-fill-available'}}/>
+        <CardMedia component='img' image={lecture.image.url} sx={{borderRadius: 2, height: '-webkit-fill-available'}}/>
       </Column>
       <Column flex={3}>
         <Row sx={{justifyContent: 'space-between'}}>

@@ -21,7 +21,6 @@ const ButtonWrapper = ({ amount, currency, showSpinner, handleSubscribe }: Butto
         });
     }, [currency, showSpinner]);
 
-
     return (<>
         {(showSpinner && isPending) && <div className="spinner" />}
         <PayPalButtons
@@ -41,7 +40,7 @@ const ButtonWrapper = ({ amount, currency, showSpinner, handleSubscribe }: Butto
                 })
                 .then(orderId => orderId)
             }
-            onApprove={(data, actions) => actions.order.capture().then(() => {
+            onApprove={(data, actions) => actions.order!.capture().then(() => {
                 handleSubscribe();
             })}
         />
