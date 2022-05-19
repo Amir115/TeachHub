@@ -1,5 +1,6 @@
 import path from 'path';
 import http from 'http';
+import fs from 'fs';
 import express from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
@@ -16,7 +17,7 @@ import { sessionMiddleware, passportMiddleware, passportSessionMiddleware } from
 export default () => {
     const app = express()
     const STATIC_FILES_DIR = path.resolve(__dirname, '../../client/dist')
-    const UPLOADS_DIR = path.resolve(__dirname, '../uploads')
+    const UPLOADS_DIR = path.resolve(__dirname, '../uploadsRoot')
 
     const listenUrl = process.env.LISTEN_URL || '0.0.0.0';
     const port = Number(process.env.PORT) || 8080;
@@ -35,8 +36,13 @@ export default () => {
     passport.deserializeUser(PersonModel.deserializeUser());
     // END Passport configuration
 
-    app.use(express.static(STATIC_FILES_DIR))
-    app.use(express.static(UPLOADS_DIR));
+    if (fs.existsSync(STATIC_FILES_DIR)) {
+        app.use(express.static(STATIC_FILES_DIR))
+    }
+    
+    if (fs.existsSync(UPLOADS_DIR)) {
+        app.use(express.static(UPLOADS_DIR))
+    }
 
     app.use('/api', apiRouter)
 
