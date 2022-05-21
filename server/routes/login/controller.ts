@@ -17,7 +17,7 @@ export const signup: RequestHandler = async (req, res, next) => {
         id: uuidv4(),
         firstName,
         lastName,
-        knowledges: [] // TODO: Edit this
+        interests: [] // TODO: Edit this
     }
 
     // Fuck this

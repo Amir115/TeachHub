@@ -8,7 +8,7 @@ export default [
         aboutInformation: 'I am a tech lead in the best company in Israel, working with master JS mr. mor cohen the architect.',
         birthDate: new Date(),
         education: 'College of management',
-        knowledges: [
+        interests: [
             {name: 'baking', level: 5},
             {name: 'js', level: 7}
         ]
@@ -20,7 +20,7 @@ export default [
         aboutInformation: 'I am a tech lead in the best company in Israel, working with master JS mr. mor cohen the architect.',
         birthDate: new Date(),
         education: 'College of management',
-        knowledges: [
+        interests: [
             {name: 'running', level: 5},
             {name: 'history', level: 7}
         ]

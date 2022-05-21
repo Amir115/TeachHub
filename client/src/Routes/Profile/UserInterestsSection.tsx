@@ -1,46 +1,48 @@
-import {Chip, Dialog, DialogContent, Grid, IconButton, Typography} from '@mui/material';
+import {Chip, CircularProgress, Dialog, DialogContent, Grid, IconButton, Typography} from '@mui/material';
 import {Column, Row} from '../../theme/layout';
 import EditIcon from '@mui/icons-material/Edit';
-import {Interest} from "../../../../common/types";
 import {useState} from "react";
 import {InterestsSelection} from "../Interests/InterestSelection";
+import useFetch from '../../hooks/use-fetch';
+import { PersonViewModel } from '../../../../common/types/person';
+import { InterestViewModel } from '../../../../common/types/interest';
 
-interface InterestsSectionProps {
-  title: string,
-  interests: Interest[],
-  onEdit: (chosenInterests: Interest[]) => void
-}
 
-export const UserInterestsSection = ({interests, title, onEdit}: InterestsSectionProps) => {
+export const UserInterestsSection = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const { data: { interests: myInterests }, loading: loadingProfile } = useFetch<PersonViewModel>("auth/me");
+  const { data: interests, loading: loadingInterests } = useFetch<[InterestViewModel]>("interests");
 
   const onClose = () => setIsOpen(false);
 
-  const onSubmit = (selectedInterests: Interest[]) => {
-    onEdit(selectedInterests);
-    onClose();
-  }
-
-  return (<Column>
-    <Row sx={{alignItems: 'flex-start'}}>
-      <Typography variant='h5'>{title}</Typography>
-      <IconButton onClick={() => setIsOpen(true)}>
-        <EditIcon/>
-      </IconButton>
-    </Row>
-    <Grid container spacing={1}>
-      {interests.map((x, i) =>
-        <Grid item key={i}>
-          <Chip label={x.name} color='secondary'/>
-        </Grid>)}
-    </Grid>
-    <Dialog open={isOpen} onClose={onClose} maxWidth='md' fullWidth>
+  return (
+    <> {
+      loadingInterests || loadingProfile 
+      ? <CircularProgress />
+      :<Column>
+        <Row sx={{alignItems: 'flex-start'}}>
+          <Typography variant='h5'>Interests</Typography>
+          <IconButton onClick={() => setIsOpen(true)}>
+            <EditIcon/>
+          </IconButton>
+        </Row>
+        <Grid container spacing={1}>
+          {myInterests.map((x, i) =>
+            <Grid item key={i}>
+              <Chip label={`${x.name} ${x.level}`} color='secondary'/>
+            </Grid>)}
+        </Grid>
+        <Dialog open={isOpen} onClose={onClose} maxWidth='md' fullWidth>
             <DialogContent>
               <Column >
-                <Typography variant='h4'> {`Choose your ${title}:`} </Typography>
-                <InterestsSelection submitButtonTitle={'OK'} onSubmit={onSubmit} defaultInterests={interests}/>
+                <Typography variant='h4'>Choose your interest:</Typography>
+                <InterestsSelection interests={interests} myInterests={myInterests}/>
               </Column>
             </DialogContent>
           </Dialog>
-  </Column>)
+      </Column>
+    }
+    </>
+  )
 };

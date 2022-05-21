@@ -1,21 +1,24 @@
 import {Interest as InterestType} from "../../../../common/types";
 import {useState} from "react";
 import {Card, CardContent, CardMedia, Typography} from "@mui/material";
+import { apiClient } from "../../utils/axios/axios-client";
 
 export type ToggleState = (interest: InterestType, state: boolean) => void;
 
 interface InterestProps {
   interest: InterestType;
-  toggleState: ToggleState;
-  defaultChosen?: boolean
+  isEdit: boolean;
+  defaultSelected: boolean;
 }
 
-export const InterestCard = ({ interest, toggleState, defaultChosen = false } : InterestProps) => {
-  const [chosen, setChosen] = useState(defaultChosen);
+export const InterestCard = ({ interest, isEdit, defaultSelected } : InterestProps) => {
+  const [chosen, setChosen] = useState(defaultSelected);
 
-  const toggle = () => {
-    setChosen((prev) => !prev);
-    toggleState(interest, !chosen);
+  const toggle = async () => {
+    if (isEdit) {
+      await apiClient.instance.put('user/interest', interest.id);
+      setChosen((prev) => !prev);
+    }
   };
 
   return (

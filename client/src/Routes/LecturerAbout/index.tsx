@@ -1,8 +1,8 @@
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import personsMock from '../../server-mocks/lecturers'
 import { Row } from '../../theme/layout';
 import { Avatar, Box, Card, Chip, CircularProgress, Stack, Typography } from '@mui/material';
-import React from 'react';
 import moment from 'moment';
 
 const LecturerAbout = () => {
@@ -31,7 +31,7 @@ const LecturerAbout = () => {
           <Typography variant='h6'>{lecturer.aboutInformation}</Typography>
           <Stack spacing={1}>
             <Typography variant='h4'>Knowledge:</Typography>
-            {lecturer.knowledges.map(({name, level}, index) => (
+            {lecturer.interests.map(({name, level}, index) => (
               <Chip key={index} label={`${name}  ${level}`} color='secondary' sx={{ width: 120 }}/>
             ))}
           </Stack>

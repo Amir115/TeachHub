@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Webcam from "react-webcam";
 import Draggable from 'react-draggable';
 
-import {Card, Typography, Box, TextField} from '@mui/material';
+import {Card, Typography, Box, TextField, Button} from '@mui/material';
 import {Column, Row} from '../../theme/layout';
 
 import lectures from "../../server-mocks/lectures";
@@ -80,6 +80,8 @@ const WatchLecture = () => {
 
   const lecturerSocketId = lecture && findUserSocket(lecture.lecturer.id)
   const mySocketId = findUserSocket(user?.id || '')
+
+  // const toggleLevel = () => axiosClient.put('/lecture/:id/level', lecture.id);
   
   return lecture ? <Column sx={{flex:1, maxHeight: 1}}>
       <Row sx={{alignItems: 'baseline', mb: 2}}>
@@ -89,6 +91,13 @@ const WatchLecture = () => {
           <Typography variant='h6' sx={{fontWeight: 600, marginLeft: 1}}>
             {`${lecture.lecturer.firstName} ${lecture.lecturer.lastName}`}
           </Typography>
+          {/* <Button onClick={toggleLevel}>
+            <Typography>{lecture.level}</Typography>
+            { lecture.rated 
+              ? <StarIcon/>
+              : <StarBorderIcon/>
+            }
+          </Button> */}
         </Row>
         <Column>
           <Typography variant='h5' sx={{fontWeight: 800}}>00:00:00</Typography>
