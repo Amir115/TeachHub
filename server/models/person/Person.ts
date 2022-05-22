@@ -3,6 +3,8 @@ import passportLocalMongoose from 'passport-local-mongoose'
 
 import { Person } from '../../../common/types';
 
+type PersonType = Person & PassportLocalDocument
+
 export const personSchema = new Schema<Person>({
   id: {
     type: String,
@@ -23,9 +25,7 @@ export const personSchema = new Schema<Person>({
   aboutInformation: String,
   education: String,
   birthDate: Date
-}) as PassportLocalSchema
-
-type PersonType = Person & PassportLocalDocument
+}) as PassportLocalSchema<Person, PassportLocalModel<PersonType>>
 
 personSchema.plugin(passportLocalMongoose)
 
