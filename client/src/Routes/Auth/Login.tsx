@@ -45,7 +45,7 @@ const Login = () => {
                     Sign In
                 </Button>
                 
-                <Grid container>
+                <Grid container justifyContent='center'>
                     <Grid item>
                         <Typography variant="body2">
                             <Link to="signup">Don't have an account? Sign Up</Link>

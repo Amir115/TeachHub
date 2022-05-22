@@ -13,7 +13,7 @@ const Profile = () => {
     <Grid container spacing={1} p={1} justifyContent='space-between' height='100%'>
       <Stack>
         <Typography variant='h4'>My profile</Typography>
-        <Typography variant='h4'>{session?.username}</Typography>
+      <Typography variant='h4'>{session && `${session.firstName} ${session.lastName}`}</Typography>
         <Stack direction='row' spacing={2} my={2}>
           <Column sx={{flex:1}}>
             <Typography variant='h5'>my knowledge:</Typography>

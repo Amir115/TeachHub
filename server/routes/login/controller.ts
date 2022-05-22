@@ -12,11 +12,12 @@ export const login: RequestHandler = (req, res) => {
 
 export const signup: RequestHandler = async (req, res, next) => {
   try {
-    const {username, firstName, lastName, password} = req.body
+    const {username, firstName, lastName, password, birthDate} = req.body
     const personData: PersonType = {
         id: uuidv4(),
         firstName,
         lastName,
+        birthDate,
         interests: [] // TODO: Edit this
     }
 

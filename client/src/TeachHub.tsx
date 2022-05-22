@@ -47,7 +47,7 @@ const TeachHub = () => {
           </Row>
           <Stack direction='row' spacing={1} alignItems='center'>
             <Typography variant='h5'>
-              {userSession?.username}
+              {userSession && `${userSession.firstName} ${userSession.lastName}`}
             </Typography>
             <Avatar sx={{ cursor: 'pointer' }} onClick={() => navigate('/profile')}/>
           </Stack>

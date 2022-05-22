@@ -8,7 +8,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { CenteredColumn } from '../../theme/layout';
 
 import Login from './Login'
-import SignUp from './SignUp'
+import SignUp from './SignUp/SignUp'
 import useAuth from '../../hooks/auth/use-auth';
 
 const Auth = () => {

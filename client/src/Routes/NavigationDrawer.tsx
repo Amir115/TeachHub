@@ -47,7 +47,7 @@ export const ManagementSystemDrawer: FC<ManagementSystemDrawerProps> = ({open, o
             .then(res => {
                 if (res.status === 200) {
                     unsetUser()
-                    navigateAndClose('/login')
+                    navigateAndClose('/auth')
                 }
             })
     }
