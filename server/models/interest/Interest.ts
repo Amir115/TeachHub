@@ -2,10 +2,6 @@ import { model, Schema } from 'mongoose';
 import { Interest} from '../../../common/types';
 
 const schema = new Schema<Interest>({
-  id: {
-    type: String,
-    required: true
-  },
   name: {
     type: String,
     required: true

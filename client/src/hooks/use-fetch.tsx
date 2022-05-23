@@ -8,7 +8,7 @@ const useFetch = <T extends unknown>(route: string) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data: response } = await apiClient.instance.get<T>(`/api/${route}`);
+        const { data: response } = await apiClient.instance.get<T>(`${route}`);
         setData(response);
       } catch (error) {
         console.error(error);

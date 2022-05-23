@@ -20,7 +20,8 @@ export const personSchema = new Schema<Person>({
   },
   interests: {
     type: [String],
-    ref: 'Interest'
+    ref: 'Interest',
+    required: true
   },
   aboutInformation: String,
   education: String,

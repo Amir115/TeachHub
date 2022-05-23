@@ -16,7 +16,7 @@ export const InterestCard = ({ interest, isEdit, defaultSelected } : InterestPro
 
   const toggle = async () => {
     if (isEdit) {
-      await apiClient.instance.put('user/interest', interest.id);
+      await apiClient.instance.put('user/interest', {id: interest._id});
       setChosen((prev) => !prev);
     }
   };

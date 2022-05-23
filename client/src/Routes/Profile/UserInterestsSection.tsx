@@ -11,7 +11,7 @@ import { InterestViewModel } from '../../../../common/types/interest';
 export const UserInterestsSection = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { data: { interests: myInterests }, loading: loadingProfile } = useFetch<PersonViewModel>("auth/me");
+  const { data: { interests: myInterests }, loading: loadingProfile } = useFetch<PersonViewModel>("user/me");
   const { data: interests, loading: loadingInterests } = useFetch<[InterestViewModel]>("interests");
 
   const onClose = () => setIsOpen(false);
@@ -28,7 +28,7 @@ export const UserInterestsSection = () => {
           </IconButton>
         </Row>
         <Grid container spacing={1}>
-          {myInterests.map((x, i) =>
+          {myInterests?.map((x, i) =>
             <Grid item key={i}>
               <Chip label={`${x.name} ${x.level}`} color='secondary'/>
             </Grid>)}

@@ -4,6 +4,17 @@ import Lecture from '../../models/lecture/Lecture';
 import { Person as PersonType } from '../../../common/types/person';
 import Interest from '../../models/interest/Interest';
 
+export const me : RequestHandler = async (req, res, next) => {
+  try {
+    //@ts-ignore
+    const model = await Person.findById(req.user._id).populate('interests');
+
+    return res.send(model as PersonType)
+  } catch (e) {
+    return next(e);
+  }
+};
+
 const getRating = async (id: string) => {
   const lecturerLectures = await Lecture.find({ lecturer: id });
 
@@ -27,9 +38,11 @@ export const getById: RequestHandler = async (req, res, next) => {
 
 export const toggleInterest: RequestHandler = async (req, res, next) => {
   try {
-    const model = await Person.findById((req.user as PersonType).id);
-    const interest = await Interest.findById(req.body)
-    const myIndex = model.interests.findIndex(x => x.id === interest.id);
+    //@ts-ignore
+    const model = await Person.findById(req.user._id).populate('interests');
+    console.log(req.body.id)
+    const interest = await Interest.findById(req.body.id);
+    const myIndex = model.interests.findIndex(x => x._id === interest._id);
 
     if (myIndex === -1) {
       model.interests.push(interest);
