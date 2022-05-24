@@ -1,7 +1,9 @@
-import { model, Schema, PassportLocalSchema, PassportLocalModel, PassportLocalDocument } from 'mongoose';
+import { model, Schema, PassportLocalSchema, PassportLocalModel, PassportLocalDocument, Types } from 'mongoose';
 import passportLocalMongoose from 'passport-local-mongoose'
 
 import { Person } from '../../../common/types';
+
+const { ObjectId } = Types;
 
 type PersonType = Person & PassportLocalDocument
 
@@ -21,6 +23,10 @@ export const personSchema = new Schema<Person>({
   interests: {
     type: [String],
     ref: 'Interest'
+  },
+  subscribedLectures: {
+    type: [ObjectId],
+    ref: 'Lecture'
   },
   aboutInformation: String,
   education: String,

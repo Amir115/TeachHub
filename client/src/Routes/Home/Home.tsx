@@ -10,12 +10,11 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import SearchIcon from '@mui/icons-material/Search';
 
 import tagsMock from '../../server-mocks/tags';
-import {getSubscribedLecturesIds} from '../../server-mocks/utils';
 
 import { Box, Button, Chip, CircularProgress, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material';
 import { LectureDetails } from '../../components/LectureDetails';
 import { useNavigate } from 'react-router-dom';
-import {InputProps} from "@mui/material/Input/Input";
+import { InputProps } from "@mui/material/Input/Input";
 import axios from 'axios';
 
 interface Tag {
@@ -24,7 +23,7 @@ interface Tag {
 }
 
 const Home = () => {
-    const isLoadingLectures = false; // TODO: Server
+    const [isLoadingLectures, setIsLoadingLectures] = useState(false);
     const [lectures, setLectures] = useState<Lecture[]>([]);
     const [subscribedLectures, setSubscribedLectures] = useState<Lecture[]>([]);
     const [searchKey, setSearchKey] = useState('');
@@ -33,9 +32,6 @@ const Home = () => {
 
     const navigate = useNavigate();
     const currentLecture: Lecture | undefined = subscribedLectures[currentLectureIndex]
-
-    // TODO: fetch from server
-    //const subscribedLecturesIds
 
     const enterLectureButton = (
         <Button
@@ -71,17 +67,24 @@ const Home = () => {
     }
 
     useEffect(() => {
-        const fetchLectures = async () => {
-            const {data} = await axios.get<Lecture[]>('/api/lectures');
+        setIsLoadingLectures(true);
+
+        axios.get<Lecture[]>('/api/lectures').then(({ data }) => {
             setLectures(data);
+            setIsLoadingLectures(false);
+        });
 
-            setSubscribedLectures(getSubscribedLecturesIds().map(id => lectures.find(x => x._id === id)).filter((x): x is Lecture => Boolean(x)) || []);
-            setCurrentLectureIndex(0);
-            setTags(tagsMock.map(value => ({ value, selected: false })));
-        };
+        setCurrentLectureIndex(0);
+        setTags(tagsMock.map(value => ({ value, selected: false })));
+    }, []);
 
-        fetchLectures();
-    }, [])
+    useEffect(() => {
+        if (lectures && lectures.length > 0) {
+            axios.get('/api/user/lectures').then(({ data: subscribedLecturesIds }) => {
+                setSubscribedLectures(subscribedLecturesIds.map((id: string) => lectures?.find(x => x._id === id)).filter((x: any): x is Lecture => Boolean(x)) || []);
+            });
+        }
+    }, [lectures]);
 
     useEffect(() => {
         const selectedTags = tags?.filter(({ selected }) => selected);
@@ -120,7 +123,7 @@ const Home = () => {
                                 </IconButton>
                             </Box>
                             <Row sx={{ flex: 3 }}>
-                                { currentLecture && <LectureDetails lecture={currentLecture} action={enterLectureButton} /> }
+                                {currentLecture && <LectureDetails lecture={currentLecture} action={enterLectureButton} />}
                             </Row>
                             <Box
                                 display='flex'
@@ -184,7 +187,7 @@ const Home = () => {
                         </Grid>
                     </Column>
                 </Row> :
-                <CenteredColumn sx={{flex: 1}}><CircularProgress /></CenteredColumn>
+                <CenteredColumn sx={{ flex: 1 }}><CircularProgress /></CenteredColumn>
             }
         </Column>
     );

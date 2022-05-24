@@ -23,7 +23,6 @@ interface LectureCardProps {
 
 export const LectureCard: FC<LectureCardProps> = ({lecture}) => {
     const navigate = useNavigate();
-    // const photoId = lecture.id % 4; // TODO: remove when having real photos
 
     return <Card sx={{cursor: 'pointer', height: '100%'}} onClick={() => navigate(`lectures/${lecture._id}`)}>
         <CardHeader
