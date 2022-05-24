@@ -10,9 +10,11 @@ import {
 } from "../../../common/types/lecture/lecture";
 
 const getViewModel = (lecture: LectureType, me: PersonType) => {
-  const rated = lecture.level.includes(me);
+  // const rated = lecture.level.includes(me);
+  //
+  // return { ...lecture, level: lecture.level.length, rated } as LectureViewModel;
 
-  return { ...lecture, level: lecture.level.length, rated } as LectureViewModel;
+  return lecture;
 };
 
 export const getAll: RequestHandler = async (req, res, next) => {

@@ -9,7 +9,6 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import SearchIcon from '@mui/icons-material/Search';
 
-import lecturesMock from '../../server-mocks/lectures';
 import tagsMock from '../../server-mocks/tags';
 import {getSubscribedLecturesIds} from '../../server-mocks/utils';
 
@@ -17,6 +16,7 @@ import { Box, Button, Chip, CircularProgress, IconButton, InputAdornment, Stack,
 import { LectureDetails } from '../../components/LectureDetails';
 import { useNavigate } from 'react-router-dom';
 import {InputProps} from "@mui/material/Input/Input";
+import axios from 'axios';
 
 interface Tag {
     value: string,
@@ -71,21 +71,24 @@ const Home = () => {
     }
 
     useEffect(() => {
-        // TODO: replace with real server request
-        setTimeout(() => {
-            setLectures(lecturesMock);
-            setSubscribedLectures(getSubscribedLecturesIds().map(id => lecturesMock.find(x => x._id === id)).filter((x): x is Lecture => Boolean(x)) || []);
+        const fetchLectures = async () => {
+            const {data} = await axios.get<Lecture[]>('/api/lectures');
+            setLectures(data);
+
+            setSubscribedLectures(getSubscribedLecturesIds().map(id => lectures.find(x => x._id === id)).filter((x): x is Lecture => Boolean(x)) || []);
             setCurrentLectureIndex(0);
             setTags(tagsMock.map(value => ({ value, selected: false })));
-        }, 300);
-    }, []);
+        };
+
+        fetchLectures();
+    }, [])
 
     useEffect(() => {
         const selectedTags = tags?.filter(({ selected }) => selected);
         const selectedTagsValues = selectedTags?.map(({ value }) => value);
         const lecturesByTags = selectedTagsValues && selectedTagsValues.length > 0 ?
-            lecturesMock.filter(lecture => lecture.tags.some(tag => selectedTagsValues.includes(tag))) :
-            lecturesMock;
+            lectures.filter(lecture => lecture.tags.some(tag => selectedTagsValues.includes(tag))) :
+            lectures;
 
         const filteredLectures = searchKey !== '' ?
             lecturesByTags.filter(({ name, lecturer: { firstName, lastName }, topic }) =>

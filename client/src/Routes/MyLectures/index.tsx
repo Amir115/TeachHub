@@ -20,7 +20,7 @@ const MyLectures = () => {
       .then(({ data }) => {
         setLectures(data.filter(({lecturer}) => lecturer.id === session?.id));
       })
-  }, []);
+  }, [isNewLectureDialogOpen]);
 
   return (
     <Grid container spacing={1} p={1} justifyContent={'space-between'} height={'100%'}>

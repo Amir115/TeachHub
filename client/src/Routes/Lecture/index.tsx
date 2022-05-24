@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, Stack, Typography } from '@mui/material';
+import { Button, CircularProgress, Stack, Typography } from '@mui/material';
 import { FacebookShareButton, FacebookIcon } from 'react-share';
 
 import { Row } from '../../theme/layout';
@@ -12,11 +12,15 @@ const LecturePage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [lecture, setLecture] = useState<Lecture | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+      setIsLoading(true);
+
         axios.get<Lecture>(`/api/lectures/${id}`)
           .then(({ data }) => {
             setLecture(data)
+            setIsLoading(false);
           })
       }, []
     );
@@ -26,7 +30,10 @@ const LecturePage = () => {
     const author = lecture && `${lecture.lecturer.firstName} ${lecture.lecturer.lastName}`;
     const facebookQuote = `check out "${lecture?.name}" lecture by ${author}`;
 
-    console.log(lecture);
+    if (isLoading) {
+      return <CircularProgress />
+    }
+
     return lecture ?
       <Stack spacing={1}>
         <Row justifyContent={'end'}>

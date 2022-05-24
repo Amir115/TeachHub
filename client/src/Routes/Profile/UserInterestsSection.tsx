@@ -28,7 +28,7 @@ export const UserInterestsSection = () => {
           </IconButton>
         </Row>
         <Grid container spacing={1}>
-          {myInterests.map((x, i) =>
+          {myInterests?.map((x, i) =>
             <Grid item key={i}>
               <Chip label={`${x.name} ${x.level}`} color='secondary'/>
             </Grid>)}
