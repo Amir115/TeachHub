@@ -1,13 +1,7 @@
 import { useEffect, useState } from "react";
-import {
-  Card,
-  Typography,
-  CardMedia,
-  CardContent,
-} from "@mui/material";
+import { Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-import interestsMock from "../../server-mocks/interests";
 import { Column } from "../../theme/layout";
 import { Interest as InterestType } from "../../../../common/types";
 import useUser from "../../hooks/auth/use-auth";
@@ -28,7 +22,8 @@ const Interests = () => {
       <Typography variant="h4" sx={{ margin: '15px' }}>
         Hi {firstName}, Tell us about your interests
       </Typography>
-      <InterestsSelection onSubmit={onSubmit} submitButtonTitle={'Show me some lectures!'}/>
+      {/* TODO: Set interesets & myInterests */}
+      <InterestsSelection interests={[]} myInterests={[]} onSubmit={onSubmit} submitButtonTitle={'Show me some lectures!'}/>
     </Column>
   );
 };

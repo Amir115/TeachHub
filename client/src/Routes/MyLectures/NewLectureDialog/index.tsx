@@ -9,7 +9,8 @@ import {
   Stack,
   TextField
 } from '@mui/material';
-import { Alarm, PhotoCamera } from '@mui/icons-material';
+import AlarmIcon from '@mui/icons-material/Alarm';
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import useAuth from '../../../hooks/auth/use-auth';
 import { Column } from '../../../theme/layout';
@@ -92,7 +93,7 @@ const NewLectureDialog = ({ open, onClose }: NewLectureDialogProps) => {
               <Input type={'date'} {...register("date")} />
               <Input placeholder={'Duration'} type={'number'} {...register("duration")} endAdornment={
                 <InputAdornment position="start">
-                  <Alarm />
+                  <AlarmIcon />
                 </InputAdornment>
               } />
               <Input placeholder={'Price'} type={'number'} {...register("price")} endAdornment={
@@ -103,7 +104,7 @@ const NewLectureDialog = ({ open, onClose }: NewLectureDialogProps) => {
               <label htmlFor="icon-button-file">
                 <PhotoInput accept="image/*" id="icon-button-file" type="file" {...register("image")}/>
                 <IconButton color="primary" aria-label="upload picture" component="span">
-                  <PhotoCamera />
+                  <PhotoCameraIcon />
                 </IconButton>
               </label>
             </Stack>

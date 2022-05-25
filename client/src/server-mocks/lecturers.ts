@@ -9,8 +9,8 @@ export default [
         birthDate: new Date(),
         education: 'College of management',
         interests: [
-            {name: 'baking', level: 5},
-            {name: 'js', level: 7}
+            {name: 'baking'},
+            {name: 'js'}
         ]
     },
     {
@@ -21,8 +21,8 @@ export default [
         birthDate: new Date(),
         education: 'College of management',
         interests: [
-            {name: 'running', level: 5},
-            {name: 'history', level: 7}
+            {name: 'running'},
+            {name: 'history'}
         ]
     }
 ] as Person[]

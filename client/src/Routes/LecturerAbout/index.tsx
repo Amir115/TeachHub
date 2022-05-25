@@ -1,16 +1,15 @@
-import React from 'react';
 import { useParams } from 'react-router-dom';
-import personsMock from '../../server-mocks/lecturers'
 import { Row } from '../../theme/layout';
 import { Avatar, Box, Card, Chip, CircularProgress, Stack, Typography } from '@mui/material';
 import moment from 'moment';
+import useFetch from '../../hooks/use-fetch';
+import { PersonViewModel } from '../../../../common/types/person';
 
 const LecturerAbout = () => {
   const { id } = useParams();
+  const {data: lecturer, loading} = useFetch<PersonViewModel>(`/user/${id}`)
 
-  const lecturer = personsMock.find(({ id: personId }) => personId === id)
-
-  return lecturer ? <Stack spacing={2} alignItems='center'>
+  return (!loading && lecturer) ? <Stack spacing={2} alignItems='center'>
     <Typography variant='h2'>About The Lecturer</Typography>
     <Card sx={{ p: 1, width: '80%' }}>
       <Row>

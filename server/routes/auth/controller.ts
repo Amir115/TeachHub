@@ -1,26 +1,14 @@
 import { RequestHandler } from 'express';
-import Person from './model';
+import { Document, ObjectId } from 'mongoose';
 import { Person as PersonType } from '../../../common/types/person';
-
-export const login: RequestHandler = async (req, res, next) => {
-  try {
-
-  } catch (e) {
-    return next(e);
-  }
-};
-
-export const register: RequestHandler = async (req, res, next) => {
-    try {
-
-    } catch (e) {
-        return next(e);
-    }
-};
+import { getRating } from '../user/controller';
 
 export const me: RequestHandler = async (req, res, next) => {
   try {
+    const person = (req.user as Document<ObjectId, any, PersonType>).toObject()
+    const level = await getRating(person._id);
 
+    res.send({ ...person, level })
   } catch (e) {
     return next(e);
   }

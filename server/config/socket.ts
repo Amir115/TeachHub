@@ -33,7 +33,7 @@ export default (server: Server, mongoSessionMiddleware: RequestHandler) => {
         const user = getUser(userSocket)
         const namespace = userSocket.nsp; // newNamespace.name === "/watch/101"
         const lectureId = namespace.name.substring(namespace.name.lastIndexOf('/') + 1)
-        const lecture = await Lecture.findOne({id: lectureId})
+        const lecture = await Lecture.findById(lectureId)
 
         const updateComments = async (socket: Socket | Namespace) => {
             const allMessages = await ChatMessageModel.find({lecture: lecture._id}).populate('user')

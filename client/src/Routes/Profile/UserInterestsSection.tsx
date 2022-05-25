@@ -11,14 +11,14 @@ import { InterestViewModel } from '../../../../common/types/interest';
 export const UserInterestsSection = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { data: { interests: myInterests }, loading: loadingProfile } = useFetch<PersonViewModel>("auth/me");
+  const { data: user, loading: loadingProfile } = useFetch<PersonViewModel>("auth/me");
   const { data: interests, loading: loadingInterests } = useFetch<[InterestViewModel]>("interests");
 
   const onClose = () => setIsOpen(false);
 
   return (
     <> {
-      loadingInterests || loadingProfile 
+      loadingInterests || loadingProfile || !user || !interests
       ? <CircularProgress />
       :<Column>
         <Row sx={{alignItems: 'flex-start'}}>
@@ -28,7 +28,7 @@ export const UserInterestsSection = () => {
           </IconButton>
         </Row>
         <Grid container spacing={1}>
-          {myInterests?.map((x, i) =>
+          {user.interests.map((x, i) =>
             <Grid item key={i}>
               <Chip label={`${x.name} ${x.level}`} color='secondary'/>
             </Grid>)}
@@ -37,7 +37,8 @@ export const UserInterestsSection = () => {
             <DialogContent>
               <Column >
                 <Typography variant='h4'>Choose your interest:</Typography>
-                <InterestsSelection interests={interests} myInterests={myInterests}/>
+                {/* TODO: Set submit function */}
+                <InterestsSelection interests={interests} myInterests={user.interests} submitButtonTitle="Save" onSubmit={() => {}}/>
               </Column>
             </DialogContent>
           </Dialog>

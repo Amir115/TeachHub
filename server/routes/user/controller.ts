@@ -1,13 +1,14 @@
 import { RequestHandler } from 'express';
-import { Types } from 'mongoose'
+import { Types, Schema } from 'mongoose'
 import Person from '../../models/person/Person';
 import Lecture from '../../models/lecture/Lecture';
 import { Person as PersonType } from '../../../common/types/person';
 import Interest from '../../models/interest/Interest';
+import { getViewModel } from '../lectures/controller';
 
 const { ObjectId } = Types;
 
-const getRating = async (id: string) => {
+export const getRating = async (id: Types.ObjectId) => {
   const lecturerLectures = await Lecture.find({ lecturer: id });
 
   return lecturerLectures.reduce((sum, x) => sum += x.level.length, 0) / lecturerLectures.length;
@@ -16,7 +17,7 @@ const getRating = async (id: string) => {
 export const getById: RequestHandler = async (req, res, next) => {
   try {
     const person = await Person.findById(req.params.id);
-    const level = await getRating(person.id);
+    const level = await getRating(person._id);
 
     return person
       ? res.send({ ...person, level })
@@ -75,7 +76,7 @@ export const getSubscribedLectures: RequestHandler = async (req, res, next) => {
   try {
     const model = await Person.findOne({ id: (req.user as PersonType).id });
     
-    return res.send(model.subscribedLectures);
+    return res.send(model.subscribedLectures.map(x => getViewModel(x, req.user as PersonType)));
   } catch (e) {
     return next(e);
   }

@@ -44,6 +44,11 @@ const schema = new Schema<Lecture>({
     ref: 'Person',
     required: true
   },
+  level: {
+    type: [String],
+    ref: 'Person',
+    default: []
+  }
 });
 
 export default model('Lecture', schema, 'lectures');

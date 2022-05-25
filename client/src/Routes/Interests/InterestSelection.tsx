@@ -1,4 +1,3 @@
-import {FC} from "react";
 import { Grid, Button } from "@mui/material";
 
 import {Column} from "../../theme/layout";
@@ -8,9 +7,11 @@ import { Interest, InterestViewModel } from "../../../../common/types/interest";
 interface InterestsSelectionProps {
   myInterests: InterestViewModel[];
   interests: Interest[];
+  submitButtonTitle: string;
+  onSubmit: (interesets: Interest[]) => void;
 }
 
-export const InterestsSelection: FC<InterestsSelectionProps> = ({ interests, myInterests }) => {
+export const InterestsSelection = ({ interests, myInterests, submitButtonTitle, onSubmit }: InterestsSelectionProps) => {
   return (
     <Column sx={{flex: 1, alignItems: 'center', height: '100%'}}>
       <Grid container spacing={4} sx={{paddingY: 4, overflowY: 'auto'}}>

@@ -6,18 +6,20 @@ import Draggable from 'react-draggable';
 import {Card, Typography, Box, TextField, Button} from '@mui/material';
 import {Column, Row} from '../../theme/layout';
 
-import lectures from "../../server-mocks/lectures";
-import {getSubscribedLecturesIds} from "../../server-mocks/utils";
-import {Lecture} from "../../../../common/types";
 import useAuth from "../../hooks/auth/use-auth";
 import useCameraStream from './use-camera-stream'
 import useWatchSocket from './use-watch-socket';
 import Comments from "./Comments/Comments";
+import useFetch from '../../hooks/use-fetch';
+import { LectureViewModel } from "../../../../common/types/lecture/lecture";
 
 const WatchLecture = () => {
   const {id} = useParams();
   const user = useAuth()
   const navigate = useNavigate();
+
+  const {data: lecture, loading: isLoadingLecture} = useFetch<LectureViewModel>(`lectures/${id}`)
+  const {data: subscribedLectures, loading: isLoadingSubscribedLectures} = useFetch<string[]>(`user/lectures`)
 
   const [cameraStream, setCameraStream] = useState<MediaStream | null>(null)
   const [userStreamsBlobUrls, setUserStreamsBlobUrls] = useState<Record<string, string | undefined>>({})
@@ -30,22 +32,16 @@ const WatchLecture = () => {
 
   const usersMediaSourcesSnapshot = useRef(createMediaSourcesSnapshot())
 
-  const [lecture, setLecture] = useState<Lecture>();
-  const isOwner = lecture?.lecturer.id === user?.id;
-
   const findUserSocket = (userId: string) => Object.keys(usersMediaSources)
     .find(userSocketId => lecture && usersMediaSources[userSocketId]?.userId === userId)
 
   useEffect(() => {
-    // TODO: fetch from server
-    const currentlecture = lectures.find(x => x._id === id) as Lecture;
+    if (isLoadingLecture || isLoadingSubscribedLectures) return;
 
-    setLecture(currentlecture);
-
-    if(!currentlecture || !id || !getSubscribedLecturesIds().includes(id)) {
+    if(!lecture || !id || !subscribedLectures?.includes(id)) {
       navigate('/');
     }
-  }, []);
+  }, [isLoadingLecture, isLoadingSubscribedLectures]);
 
   useEffect(() => {
     if (cameraStream) {

@@ -9,7 +9,7 @@ import {
   Lecture as LectureType,
 } from "../../../common/types/lecture/lecture";
 
-const getViewModel = (lecture: LectureType, me: PersonType) => {
+export const getViewModel = (lecture: LectureType, me: PersonType) => {
   // const rated = lecture.level.includes(me);
   //
   // return { ...lecture, level: lecture.level.length, rated } as LectureViewModel;
@@ -50,7 +50,7 @@ export const insert: RequestHandler = async (req, res, next) => {
     const final_img = {
       contentType: req.file.mimetype,
       data: img,
-      url: `uploadsRoot/uploads/${req.file.originalname}`,
+      url: `/uploads/${req.file.originalname}`,
     };
 
     const lecture = JSON.parse(req.body.lecture);
