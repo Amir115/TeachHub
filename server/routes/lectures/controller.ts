@@ -9,6 +9,8 @@ import {
   Lecture as LectureType,
 } from "../../../common/types/lecture/lecture";
 
+import { Image } from "../../../common/types/lecture/new-lecture";
+
 export const getViewModel = (lecture: LectureType, me: PersonType) => {
   // const rated = lecture.level.includes(me);
   //
@@ -47,8 +49,7 @@ export const getById: RequestHandler = async (req, res, next) => {
 export const insert: RequestHandler = async (req, res, next) => {
   try {
     const img = fs.readFileSync(`uploadsRoot/uploads/${req.file.filename}`);
-    const final_img = {
-      contentType: req.file.mimetype,
+    const final_img: Image = {
       data: img,
       url: `/uploads/${req.file.originalname}`,
     };

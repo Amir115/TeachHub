@@ -1,6 +1,6 @@
 import { Person } from '../person';
 
-interface Image {
+export interface Image {
   url: string,
   data: string | ArrayBuffer
 }
