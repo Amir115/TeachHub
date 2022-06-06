@@ -16,6 +16,5 @@ export interface NewLecture {
   cost: number
   tags: string[]
   image: Image
-  participants: number,
-  level: Person[]
+  participants: number
 }

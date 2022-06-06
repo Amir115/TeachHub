@@ -18,7 +18,7 @@ const MyLectures = () => {
   useEffect(() => {
     axios.get<Lecture[]>('/api/lectures')
       .then(({ data }) => {
-        setLectures(data.filter(({lecturer}) => lecturer.id === session?.id));
+        setLectures(data.filter(({lecturer}) => lecturer._id === session?._id));
       })
   }, [isNewLectureDialogOpen]);
 

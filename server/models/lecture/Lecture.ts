@@ -1,6 +1,16 @@
 import { model, Schema } from 'mongoose';
 import { Lecture} from '../../../common/types';
 
+const lectureRating = new Schema({
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'Person'
+  },
+  rating: {
+    type: Number
+  }
+})
+
 const schema = new Schema<Lecture>({
   information: {
     type: String,
@@ -40,13 +50,12 @@ const schema = new Schema<Lecture>({
     required: true
   },
   lecturer: {
-    type: String,
+    type: Schema.Types.ObjectId,
     ref: 'Person',
     required: true
   },
-  level: {
-    type: [String],
-    ref: 'Person',
+  ratings: {
+    type: [lectureRating],
     default: []
   }
 });

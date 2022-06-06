@@ -1,20 +1,26 @@
 import {Chip, CircularProgress, Dialog, DialogContent, Grid, IconButton, Typography} from '@mui/material';
 import {Column, Row} from '../../theme/layout';
 import EditIcon from '@mui/icons-material/Edit';
-import {useState} from "react";
+import React, {FC, useState} from "react";
 import {InterestsSelection} from "../Interests/InterestSelection";
 import useFetch from '../../hooks/use-fetch';
-import { PersonViewModel } from '../../../../common/types/person';
-import { InterestViewModel } from '../../../../common/types/interest';
+import {apiClient} from "../../utils/axios/axios-client";
+import {Interest, Person} from "../../../../common/types";
 
-
-export const UserInterestsSection = () => {
+export const UserInterestsSection: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { data: user, loading: loadingProfile } = useFetch<PersonViewModel>("auth/me");
-  const { data: interests, loading: loadingInterests } = useFetch<[InterestViewModel]>("interests");
+  const { data: user, loading: loadingProfile } = useFetch<Person>("auth/me", [isOpen]);
+  const { data: interests, loading: loadingInterests } = useFetch<[Interest]>("interests");
 
-  const onClose = () => setIsOpen(false);
+  const onClose = () => {
+    setIsOpen(false);
+  };
+
+  const onSubmit = async (selectedInterests: Interest[]) => {
+    await apiClient.instance.put('user/interests', {interests: JSON.stringify(selectedInterests)});
+    onClose();
+  }
 
   return (
     <> {
@@ -30,15 +36,14 @@ export const UserInterestsSection = () => {
         <Grid container spacing={1}>
           {user.interests.map((x, i) =>
             <Grid item key={i}>
-              <Chip label={`${x.name} ${x.level}`} color='secondary'/>
+              <Chip label={x.name} color='secondary'/>
             </Grid>)}
         </Grid>
         <Dialog open={isOpen} onClose={onClose} maxWidth='md' fullWidth>
             <DialogContent>
               <Column >
                 <Typography variant='h4'>Choose your interest:</Typography>
-                {/* TODO: Set submit function */}
-                <InterestsSelection interests={interests} myInterests={user.interests} submitButtonTitle="Save" onSubmit={() => {}}/>
+                <InterestsSelection submitButtonTitle={'OK'} onSubmit={onSubmit} defaultInterests={user.interests}/>
               </Column>
             </DialogContent>
           </Dialog>

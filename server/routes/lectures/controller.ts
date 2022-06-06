@@ -4,28 +4,14 @@ import { Lecture } from "../../../common/types";
 import * as fs from "fs";
 
 import { Person as PersonType } from "../../../common/types/person";
-import {
-  LectureViewModel,
-  Lecture as LectureType,
-} from "../../../common/types/lecture/lecture";
-
+import { LectureRating } from "../../../common/types/lecture/lecture";
 import { Image } from "../../../common/types/lecture/new-lecture";
-
-export const getViewModel = (lecture: LectureType, me: PersonType) => {
-  // const rated = lecture.level.includes(me);
-  //
-  // return { ...lecture, level: lecture.level.length, rated } as LectureViewModel;
-
-  return lecture;
-};
 
 export const getAll: RequestHandler = async (req, res, next) => {
   try {
     const entities = await Model.find().populate("lecturer");
-    const me = req.user as PersonType;
-    const viewModels = entities.map((x) => getViewModel(x, me));
 
-    return res.send(viewModels);
+    return res.send(entities);
   } catch (e) {
     return next(e);
   }
@@ -34,10 +20,9 @@ export const getAll: RequestHandler = async (req, res, next) => {
 export const getById: RequestHandler = async (req, res, next) => {
   try {
     const lecture = await Model.findById(req.params.id).populate("lecturer");
-    const me = req.user as PersonType;
 
     return lecture
-      ? res.send(getViewModel(lecture, me))
+      ? res.send(lecture)
       : res.status(404).send({
           message: `lecture with id ${req.params.id} not exists`,
         });
@@ -66,19 +51,26 @@ export const insert: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const toggleRating: RequestHandler = async (req, res, next) => {
+export const addRating: RequestHandler = async (req, res, next) => {
   try {
     const lecture = await Model.findById(req.params.id);
-    const me = req.user as PersonType;
-    const myIndex = lecture.level.findIndex((x) => x.id === me.id);
+    const currentUser = req.user as PersonType;
+    const currentRating = lecture.ratings.find(x => x.user._id.toString() === currentUser._id.toString());
 
-    if (myIndex === -1) {
-      lecture.level.push(me);
+    if(currentRating) {
+      currentRating.rating = req.body.rating;
     } else {
-      lecture.level.splice(myIndex, 1);
+      if(!lecture.ratings) {
+        lecture.ratings = [];
+      }
+
+      lecture.ratings.push({
+        rating: req.body.rating as number,
+        user: req.user
+      } as LectureRating);
     }
 
-    lecture.save();
+    await lecture.save();
 
     return res.send(lecture);
   } catch (e) {

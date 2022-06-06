@@ -14,7 +14,7 @@ export const signup: RequestHandler = async (req, res, next) => {
   try {
     const {username, firstName, lastName, password, birthDate} = req.body
     const personData: PersonType = {
-        id: uuidv4(),
+        _id: uuidv4(),
         firstName,
         lastName,
         birthDate,

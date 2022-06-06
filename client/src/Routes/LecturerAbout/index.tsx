@@ -1,13 +1,22 @@
 import { useParams } from 'react-router-dom';
+// @ts-ignore
+import ReactStars from "react-rating-stars-component";
+
 import { Row } from '../../theme/layout';
 import { Avatar, Box, Card, Chip, CircularProgress, Stack, Typography } from '@mui/material';
 import moment from 'moment';
 import useFetch from '../../hooks/use-fetch';
-import { PersonViewModel } from '../../../../common/types/person';
+import {Person} from "../../../../common/types";
+import React from "react";
+
+interface UserRating {
+  rating: number
+}
 
 const LecturerAbout = () => {
   const { id } = useParams();
-  const {data: lecturer, loading} = useFetch<PersonViewModel>(`/user/${id}`)
+  const {data: lecturer, loading} = useFetch<Person>(`user/${id}`)
+  const {data: userRating, loading: loadingRating} = useFetch<UserRating>(`user/${id}/rating`)
 
   return (!loading && lecturer) ? <Stack spacing={2} alignItems='center'>
     <Typography variant='h2'>About The Lecturer</Typography>
@@ -30,11 +39,19 @@ const LecturerAbout = () => {
           <Typography variant='h6'>{lecturer.aboutInformation}</Typography>
           <Stack spacing={1}>
             <Typography variant='h4'>Knowledge:</Typography>
-            {lecturer.interests.map(({name, level}, index) => (
-              <Chip key={index} label={`${name}  ${level}`} color='secondary' sx={{ width: 120 }}/>
+            {lecturer.interests.map(({name}, index) => (
+              <Chip key={index} label={`${name}`} color='secondary' sx={{ width: 120 }}/>
             ))}
           </Stack>
         </Stack>
+        {!loadingRating &&
+        <ReactStars
+          count={5}
+          size={24}
+          value={userRating?.rating}
+          activeColor="#ffd700"
+          edit={false}
+        />}
       </Row>
     </Card>
   </Stack> : <CircularProgress />;

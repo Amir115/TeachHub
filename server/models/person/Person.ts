@@ -1,17 +1,13 @@
-import { model, Schema, PassportLocalSchema, PassportLocalModel, PassportLocalDocument, Types } from 'mongoose';
+import {model, Schema, PassportLocalSchema, PassportLocalModel, PassportLocalDocument, Types} from 'mongoose';
 import passportLocalMongoose from 'passport-local-mongoose'
 
-import { Person } from '../../../common/types';
+import {Person} from '../../../common/types';
 
-const { ObjectId } = Types;
+const {ObjectId} = Types;
 
 type PersonType = Person & PassportLocalDocument
 
 export const personSchema = new Schema<Person>({
-  id: {
-    type: String,
-    required: true
-  },
   firstName: {
     type: String,
     required: true
@@ -20,13 +16,12 @@ export const personSchema = new Schema<Person>({
     type: String,
     required: true
   },
-  interests: {
-    type: [String],
-    ref: 'Interest'
-  },
+  interests: [{
+    type: ObjectId, ref: 'Interest', default: []
+  }],
   subscribedLectures: {
     type: [ObjectId],
-    ref: 'Lecture'
+    ref: 'Lecture',
   },
   aboutInformation: String,
   education: String,

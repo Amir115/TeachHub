@@ -45,7 +45,7 @@ const LecturePage = () => {
           </FacebookShareButton>
         </Row>
         <Typography variant='h4'>{lecture.name}</Typography>
-        <Typography variant='h6' onClick={() => navigate(`../../lecturer/${lecture.lecturer.id}`)}
+        <Typography variant='h6' onClick={() => navigate(`../../lecturer/${lecture.lecturer._id}`)}
                     sx={{ textDecoration: 'underline', cursor: 'pointer' }}>
           {author}
         </Typography>

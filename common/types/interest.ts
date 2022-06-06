@@ -1,9 +1,9 @@
 export interface Interest {
-  id: string;
+  _id: string;
   name: string;
   image: string;
 }
 
-export interface InterestViewModel extends Interest {
-  level: number;
+export interface UserKnowledge extends Interest {
+  rating: number;
 }

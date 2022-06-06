@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { apiClient } from '../utils/axios/axios-client'
 
-const useFetch = <T extends unknown>(route: string) => {
+const useFetch = <T extends unknown>(route: string, dependencies: any[] = []) => {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -17,7 +17,7 @@ const useFetch = <T extends unknown>(route: string) => {
     };
 
     fetchData();
-  }, []);
+  }, dependencies);
 
   return {
     data,

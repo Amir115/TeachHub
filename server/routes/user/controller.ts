@@ -1,26 +1,42 @@
 import { RequestHandler } from 'express';
-import { Types, Schema } from 'mongoose'
+import { meanBy, sum } from 'lodash';
+import { Types } from 'mongoose'
 import Person from '../../models/person/Person';
 import Lecture from '../../models/lecture/Lecture';
-import { Person as PersonType } from '../../../common/types/person';
-import Interest from '../../models/interest/Interest';
-import { getViewModel } from '../lectures/controller';
+import {Person as PersonType, Interest as InterestType, Lecture as LectureType} from '../../../common/types';
+
+export const me : RequestHandler = async (req, res, next) => {
+  try {
+    //@ts-ignore
+    const model = await Person.findById(req.user._id).populate('interests');
+    console.log(model.interests);
+
+    return res.send(model);
+  } catch (e) {
+    return next(e);
+  }
+};
 
 const { ObjectId } = Types;
 
-export const getRating = async (id: Types.ObjectId) => {
-  const lecturerLectures = await Lecture.find({ lecturer: id });
+export const getUserRating: RequestHandler = async (req, res, next) => {
+  try{
+    const lecturerLectures = (await Lecture.find({ lecturer: req.params.id })) as LectureType[];
+    const lecturesRatings = lecturerLectures.map(lecture => meanBy(lecture.ratings, x => x.rating));
 
-  return lecturerLectures.reduce((sum, x) => sum += x.level.length, 0) / lecturerLectures.length;
+    return res.send({rating: sum(lecturesRatings) / lecturesRatings.length})
+  }catch (e){
+    return next(e);
+  }
+
 };
 
 export const getById: RequestHandler = async (req, res, next) => {
   try {
     const person = await Person.findById(req.params.id);
-    const level = await getRating(person._id);
 
     return person
-      ? res.send({ ...person, level })
+      ? res.send(person)
       : res.status(404).send({
         message: `person with id ${req.params.id} not exists`,
       });
@@ -29,29 +45,22 @@ export const getById: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const toggleInterest: RequestHandler = async (req, res, next) => {
+export const updateInterests: RequestHandler = async (req, res, next) => {
   try {
-    const model = await Person.findById((req.user as PersonType).id);
-    const interest = await Interest.findById(req.body)
-    const myIndex = model.interests.findIndex(x => x.id === interest.id);
+    const me = req.user as PersonType;
+    const model = await Person.findById(me._id).populate('interests');
+    model.interests = JSON.parse(req.body.interests) as InterestType[];
 
-    if (myIndex === -1) {
-      model.interests.push(interest);
-    } else {
-      model.interests.splice(myIndex, 1);
-    }
+    await model.save();
 
-    model.save();
-
-    return res.send(model);
   } catch (e) {
     return next(e);
   }
-};
+}
 
 export const toggleSubscribe: RequestHandler = async (req, res, next) => {
   try {
-    const model = await Person.findOne({ id: (req.user as PersonType).id });
+    const model = await Person.findOne({ id: (req.user as PersonType)._id });
     const newLecture = await Lecture.findById(new ObjectId(req.params.lectureId));
     const lectureIndex = model.subscribedLectures.findIndex(x => x._id === newLecture._id);
 
@@ -74,9 +83,9 @@ export const toggleSubscribe: RequestHandler = async (req, res, next) => {
 
 export const getSubscribedLectures: RequestHandler = async (req, res, next) => {  
   try {
-    const model = await Person.findOne({ id: (req.user as PersonType).id });
+    const model = await Person.findOne({ id: (req.user as PersonType)._id });
     
-    return res.send(model.subscribedLectures.map(x => getViewModel(x, req.user as PersonType)));
+    return res.send(model.subscribedLectures);
   } catch (e) {
     return next(e);
   }

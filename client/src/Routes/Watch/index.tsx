@@ -11,14 +11,14 @@ import useCameraStream from './use-camera-stream'
 import useWatchSocket from './use-watch-socket';
 import Comments from "./Comments/Comments";
 import useFetch from '../../hooks/use-fetch';
-import { LectureViewModel } from "../../../../common/types/lecture/lecture";
+import { Lecture } from "../../../../common/types";
 
 const WatchLecture = () => {
   const {id} = useParams();
   const user = useAuth()
   const navigate = useNavigate();
 
-  const {data: lecture, loading: isLoadingLecture} = useFetch<LectureViewModel>(`lectures/${id}`)
+  const {data: lecture, loading: isLoadingLecture} = useFetch<Lecture>(`lectures/${id}`)
   const {data: subscribedLectures, loading: isLoadingSubscribedLectures} = useFetch<string[]>(`user/lectures`)
 
   const [cameraStream, setCameraStream] = useState<MediaStream | null>(null)
@@ -74,8 +74,8 @@ const WatchLecture = () => {
     usersMediaSourcesSnapshot.current = createMediaSourcesSnapshot();
   }, [usersMediaSources]);
 
-  const lecturerSocketId = lecture && findUserSocket(lecture.lecturer.id)
-  const mySocketId = findUserSocket(user?.id || '')
+  const lecturerSocketId = lecture && findUserSocket(lecture.lecturer._id)
+  const mySocketId = findUserSocket(user?._id || '')
 
   // const toggleLevel = () => axiosClient.put('/lecture/:id/level', lecture.id);
   
