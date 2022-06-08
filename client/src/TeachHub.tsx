@@ -39,18 +39,18 @@ const TeachHub = () => {
         <Toolbar sx={{ padding: 1, justifyContent: 'space-between' }}>
           <Row sx={{ alignItems: 'baseLine' }}>
             {userSession && <IconButton color="inherit" onClick={() => setIsDrawerOpen(x => !x)} edge="start">
-                <MenuIcon />
+              <MenuIcon />
             </IconButton>}
             <Box sx={{ display: 'flex', cursor: 'pointer' }}>
               <img height="50" src={icon} alt='icon' onClick={() => navigate('/')} />
             </Box>
           </Row>
-          <Stack direction='row' spacing={1} alignItems='center'>
+          {userSession && <Stack direction='row' spacing={1} alignItems='center'>
             <Typography variant='h5'>
-              {userSession && `${userSession.firstName} ${userSession.lastName}`}
+              {`${userSession.firstName} ${userSession.lastName}`}
             </Typography>
-            <Avatar sx={{ cursor: 'pointer' }} onClick={() => navigate('/profile')}/>
-          </Stack>
+            <Avatar sx={{ cursor: 'pointer' }} onClick={() => navigate('/profile')} />
+          </Stack>}
         </Toolbar>
       </AppBar>
 

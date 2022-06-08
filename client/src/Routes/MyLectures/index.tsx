@@ -6,13 +6,14 @@ import AddIcon from '@mui/icons-material/Add';
 import { Lecture } from '../../../../common/types';
 import { LectureCard } from './LectureCard';
 import { Row } from '../../theme/layout';
-import NewLectureDialog from './NewLectureDialog';
+import UpsertLectureDialog from './UpsertLectureDialog';
 import axios from 'axios';
 import useAuth from '../../hooks/auth/use-auth';
 
 const MyLectures = () => {
   const [lectures, setLectures] = useState<Lecture[]>([]);
-  const [isNewLectureDialogOpen, setIsNewLectureDialogOpen] = useState(false);
+  const [open, setIsOpen] = useState(false);
+  const [currentLecture, setCurrentLecture] = useState<Lecture>();
   const session = useAuth();
 
   useEffect(() => {
@@ -20,7 +21,12 @@ const MyLectures = () => {
       .then(({ data }) => {
         setLectures(data.filter(({lecturer}) => lecturer._id === session?._id));
       })
-  }, [isNewLectureDialogOpen]);
+  }, [open]);
+
+  const handleClose = () => {
+    setCurrentLecture(undefined)
+    setIsOpen(false);
+  }
 
   return (
     <Grid container spacing={1} p={1} justifyContent={'space-between'} height={'100%'}>
@@ -30,21 +36,20 @@ const MyLectures = () => {
       <Grid container spacing={2} sx={{ paddingY: 4, width: '100%' }}>
         {lectures?.map(lecture => (
           <Grid key={lecture._id} item xs={3}>
-            <LectureCard lecture={lecture} />
+            <LectureCard lecture={lecture} setIsOpen={setIsOpen} setLecture={setCurrentLecture} />
           </Grid>
         ))}
       </Grid>
       <Button
         sx={{ position: 'fixed', bottom: '20px', right: '20px' }}
-                endIcon={<AddIcon />}
+        endIcon={<AddIcon />}
         variant={'contained'}
         color={'secondary'}
-        onClick={() => setIsNewLectureDialogOpen(true)}
+        onClick={() => setIsOpen(true)}
       >
         {'New Lecture'}
       </Button>
-      <NewLectureDialog open={isNewLectureDialogOpen}
-                        onClose={() => setIsNewLectureDialogOpen(false)} />
+      {open && <UpsertLectureDialog open={open} onClose={handleClose} lecture={currentLecture} />}
     </Grid>
   )
 }

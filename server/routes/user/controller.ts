@@ -64,24 +64,21 @@ export const toggleSubscribe: RequestHandler = async (req, res, next) => {
     const newLecture = await Lecture.findById(new ObjectId(req.params.lectureId));
     const lectureIndex = model.subscribedLectures.findIndex(x => x._id === newLecture._id);
 
-    if (lectureIndex === -1) {
-      model.subscribedLectures.push(newLecture);
-      newLecture.participants++;
-    } else {
-      model.subscribedLectures.splice(lectureIndex, 1);
-      newLecture.participants--;
-    }
+    if (lectureIndex !== -1) return res.sendStatus(400);
+
+    model.subscribedLectures.push(newLecture);
+    newLecture.participants++;
 
     await model.save();
     await newLecture.save();
 
-    return res.send(model);
+    return res.sendStatus(200);
   } catch (e) {
     return next(e);
   }
 };
 
-export const getSubscribedLectures: RequestHandler = async (req, res, next) => {  
+export const getSubscribedLectures: RequestHandler = async (req, res, next) => {
   try {
     const model = await Person.findOne({ id: (req.user as PersonType)._id });
     

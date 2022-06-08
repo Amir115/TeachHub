@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CardHeader, Avatar, IconButton, CardMedia, CardContent, Typography, Card, Chip } from '@mui/material';
 
@@ -9,11 +9,19 @@ import { Lecture } from '../../../../common/types';
 import { Row } from '../../theme/layout';
 
 interface LectureCardProps {
-    lecture: Lecture
+    lecture: Lecture,
+    setIsOpen: (open: boolean) => void,
+    setLecture: (lecture: Lecture) => void
 }
 
-export const LectureCard: FC<LectureCardProps> = ({ lecture }) => {
+export const LectureCard: FC<LectureCardProps> = ({ lecture, setIsOpen, setLecture }) => {
     const navigate = useNavigate();
+
+    const handleEditClick = (e: MouseEvent<HTMLElement>) => {
+        e.stopPropagation();
+        setLecture(lecture);
+        setIsOpen(true);
+    }
 
     return (
         <Card sx={{ cursor: 'pointer', height: '85%' }} onClick={() => navigate(`../lectures/${lecture._id}`)}>
@@ -27,7 +35,7 @@ export const LectureCard: FC<LectureCardProps> = ({ lecture }) => {
                             <Typography>{lecture.participants}</Typography>
                             <PersonIcon />
                         </Row>
-                        <IconButton onClick={e => e.stopPropagation()}>
+                        <IconButton onClick={handleEditClick}>
                             <EditIcon />
                         </IconButton>
                     </Row>

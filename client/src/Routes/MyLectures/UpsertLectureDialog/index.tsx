@@ -13,11 +13,13 @@ import AlarmIcon from '@mui/icons-material/Alarm';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import useAuth from '../../../hooks/auth/use-auth';
+import { useSnackbar } from '../../../providers/SnackbarProvider';
 import { Column } from '../../../theme/layout';
 import { Tags } from '../../../../../common/types/tags';
 import TagsMock from '../../../server-mocks/tags';
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
+import { Lecture } from '../../../../../common/types';
 
 type Inputs = {
   subject: string,
@@ -30,40 +32,49 @@ type Inputs = {
   image: FileList
 };
 
-interface NewLectureDialogProps {
+interface UpsertLectureDialogProps {
   open: boolean,
-  onClose: () => void
+  onClose: () => void,
+  lecture: Lecture | undefined
 }
 
 const PhotoInput = styled('input')({
   display: 'none',
 });
 
-const NewLectureDialog = ({ open, onClose }: NewLectureDialogProps) => {
-  const { register, handleSubmit } = useForm<Inputs>();
+const UpsertLectureDialog = ({ open, onClose, lecture }: UpsertLectureDialogProps) => {
+  const { watch, register, handleSubmit } = useForm<Inputs>();
   const user = useAuth();
+  const { openMessage } = useSnackbar();
 
   const onSubmit: SubmitHandler<Inputs> = async data => {
-    const form = new FormData();
-    form.append('image', data.image[0]);
+    try {
+      const form = new FormData();
 
-    const newLecture = {
-      ...data,
-      lecturer: user,
-      cost: data.price,
-      name: data.subject,
-	      information: data.description,
-      participants: 0,
-      topic: data.topic,
-      tags: data.tags
-    };
-
-    form.append('lecture', JSON.stringify(newLecture));
-
-    console.log(form);
-    await axios.post('/api/lectures/', form);
-
-    onClose();
+      data.image?.[0] && form.append('image', data.image[0]);
+      
+      const newLecture = {
+        ...data,
+        lecturer: user,
+        cost: data.price,
+        name: data.subject,
+        information: data.description,
+        participants: lecture ? lecture.participants : 0,
+        topic: data.topic,
+        tags: data.tags
+      };
+  
+      form.append('lecture', JSON.stringify(newLecture));
+  
+      lecture ? await axios.put(`/api/lectures/${lecture._id}`, form) : await axios.post('/api/lectures/', form);
+  
+      openMessage(lecture ? 'Lecture updated successfully!' : 'Lecture created successfully!', 'success');
+  
+      onClose();
+    }
+    catch (e) {
+      openMessage('Cannot save lecture, please try again later', 'error');
+    }
   }
 
   return (
@@ -72,11 +83,11 @@ const NewLectureDialog = ({ open, onClose }: NewLectureDialogProps) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={2}>
             <Stack spacing={1} direction={'row'}>
-              <Input placeholder={'subject'} {...register("subject")} fullWidth />
-              <Input placeholder={'topic'} {...register("topic")} fullWidth />
+              <Input placeholder={'subject'} value={watch('subject') || lecture?.name} {...register("subject")} fullWidth />
+              <Input placeholder={'topic'} value={watch('topic') || lecture?.topic} {...register("topic")} fullWidth />
               <Column>
                 <InputLabel>Tags</InputLabel>
-                <Select multiple {...register('tags')} sx={{ width: 400 }} defaultValue={[]}>
+                <Select multiple defaultValue={lecture?.tags || []} {...register('tags')} sx={{ width: 400 }}>
                   {TagsMock.map((x, i) => (
                     <MenuItem key={i} value={x}>{x}</MenuItem>
                   ))}
@@ -84,25 +95,26 @@ const NewLectureDialog = ({ open, onClose }: NewLectureDialogProps) => {
               </Column>
             </Stack>
             <TextField placeholder={'Describe what you want to talk about…'}
-                       multiline
-                       sx={{ maxHeight: 180, overflow: 'auto' }}
-                       {...register("description", { required: true })}
+              multiline
+              sx={{ maxHeight: 180, overflow: 'auto' }}
+              value={watch('description') || lecture?.information}
+              {...register("description", { required: true })}
 
             />
             <Stack direction='row' spacing={2}>
-              <Input type={'date'} {...register("date")} />
-              <Input placeholder={'Duration'} type={'number'} {...register("duration")} endAdornment={
+              <Input type={'date'} value={(watch('date') || lecture?.date)?.toString().split('T')[0]} {...register("date")} />
+              <Input placeholder={'Duration'} type={'number'} value={watch('duration') || lecture?.duration} {...register("duration")} endAdornment={
                 <InputAdornment position="start">
                   <AlarmIcon />
                 </InputAdornment>
               } />
-              <Input placeholder={'Price'} type={'number'} {...register("price")} endAdornment={
+              <Input placeholder={'Price'} type={'number'} value={watch('price') || lecture?.cost} {...register("price")} endAdornment={
                 <InputAdornment position="start">
                   $
                 </InputAdornment>
               } />
               <label htmlFor="icon-button-file">
-                <PhotoInput accept="image/*" id="icon-button-file" type="file" {...register("image")}/>
+                <PhotoInput accept="image/*" id="icon-button-file" type="file" {...register("image")} />
                 <IconButton color="primary" aria-label="upload picture" component="span">
                   <PhotoCameraIcon />
                 </IconButton>
@@ -119,4 +131,4 @@ const NewLectureDialog = ({ open, onClose }: NewLectureDialogProps) => {
   );
 }
 
-export default NewLectureDialog;
+export default UpsertLectureDialog;

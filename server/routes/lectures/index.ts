@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAll, getById, insert, addRating } from './controller';
+import { getAll, getById, insert, update, addRating } from './controller';
 import multer from 'multer';
 
 const router = Router();
@@ -19,5 +19,6 @@ router.get('/', getAll);
 router.get('/:id', getById);
 router.post('/', upload.single('image'), insert);
 router.put('/:id/rating', addRating);
+router.put('/:id', upload.single('image'), update);
 
 export default router;

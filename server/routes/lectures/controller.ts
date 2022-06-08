@@ -24,8 +24,8 @@ export const getById: RequestHandler = async (req, res, next) => {
     return lecture
       ? res.send(lecture)
       : res.status(404).send({
-          message: `lecture with id ${req.params.id} not exists`,
-        });
+        message: `lecture with id ${req.params.id} not exists`,
+      });
   } catch (e) {
     return next(e);
   }
@@ -51,16 +51,47 @@ export const insert: RequestHandler = async (req, res, next) => {
   }
 };
 
+export const update: RequestHandler = async (req, res, next) => {
+  try {
+    let newLecture;
+
+    if (!req.file) {
+      newLecture = JSON.parse(req.body.lecture);
+      const { image, ...lecture } = newLecture;
+      newLecture = lecture;
+    }
+    else {
+      const img = fs.readFileSync(`uploadsRoot/uploads/${req.file.filename}`);
+      const final_img: Image = {
+        data: img,
+        url: `/uploads/${req.file.originalname}`,
+      };
+
+      const lecture = JSON.parse(req.body.lecture);
+
+      newLecture = { ...lecture, image: final_img };
+    }
+
+    if (typeof(newLecture.tags) === 'string') newLecture.tags = newLecture.tags.split(',');
+
+    await Model.findByIdAndUpdate(req.params.id, { $set: newLecture });
+
+    res.sendStatus(200);
+  } catch (e) {
+    return next(e);
+  }
+};
+
 export const addRating: RequestHandler = async (req, res, next) => {
   try {
     const lecture = await Model.findById(req.params.id);
     const currentUser = req.user as PersonType;
     const currentRating = lecture.ratings.find(x => x.user._id.toString() === currentUser._id.toString());
 
-    if(currentRating) {
+    if (currentRating) {
       currentRating.rating = req.body.rating;
     } else {
-      if(!lecture.ratings) {
+      if (!lecture.ratings) {
         lecture.ratings = [];
       }
 
