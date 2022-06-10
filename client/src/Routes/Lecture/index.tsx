@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button, CircularProgress, Stack, Typography } from '@mui/material';
 import { FacebookShareButton, FacebookIcon } from 'react-share';
 
-import { Row } from '../../theme/layout';
+import { CenteredRow, Row } from '../../theme/layout';
 import { LectureDetails } from "../../components/LectureDetails";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -31,7 +31,7 @@ const LecturePage = () => {
     const facebookQuote = `check out "${lecture?.name}" lecture by ${author}`;
 
     if (isLoading) {
-      return <CircularProgress />
+      return <CenteredRow flex={1}><CircularProgress /></CenteredRow>
     }
 
     return lecture ?

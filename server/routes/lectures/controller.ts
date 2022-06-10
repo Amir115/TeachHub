@@ -11,9 +11,9 @@ export const getAll: RequestHandler = async (req, res, next) => {
   try {
     const entities = await Model.find().populate("lecturer");
 
-    return res.send(entities);
+    res.send(entities);
   } catch (e) {
-    return next(e);
+    next(e);
   }
 };
 
@@ -21,13 +21,13 @@ export const getById: RequestHandler = async (req, res, next) => {
   try {
     const lecture = await Model.findById(req.params.id).populate("lecturer");
 
-    return lecture
+    lecture
       ? res.send(lecture)
       : res.status(404).send({
         message: `lecture with id ${req.params.id} not exists`,
       });
   } catch (e) {
-    return next(e);
+    next(e);
   }
 };
 
@@ -47,7 +47,7 @@ export const insert: RequestHandler = async (req, res, next) => {
 
     res.sendStatus(201);
   } catch (e) {
-    return next(e);
+    next(e);
   }
 };
 
@@ -78,7 +78,7 @@ export const update: RequestHandler = async (req, res, next) => {
 
     res.sendStatus(200);
   } catch (e) {
-    return next(e);
+    next(e);
   }
 };
 
@@ -103,8 +103,8 @@ export const addRating: RequestHandler = async (req, res, next) => {
 
     await lecture.save();
 
-    return res.send(lecture);
+    res.send(lecture);
   } catch (e) {
-    return next(e);
+    next(e);
   }
 };

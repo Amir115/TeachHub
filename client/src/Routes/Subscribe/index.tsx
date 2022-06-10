@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Column, Row } from '../../theme/layout';
-import { Button, Card, CardActions, Stack, Typography } from '@mui/material';
+import { CenteredColumn, Column, Row } from '../../theme/layout';
+import { Button, Card, CardActions, CircularProgress, Stack, Typography } from '@mui/material';
 import { useSnackbar } from '../../providers/SnackbarProvider';
 import PaypalButtons from './PaypalButtons';
 import { Lecture, Person } from '../../../../common/types';
@@ -39,7 +39,7 @@ const Subscribe = () => {
         <Stack sx={{ height: '100%', justifyContent: 'center', alignItems: 'center' }}>
             <Card sx={{ p: 3, width: '40%', height: '500px' }}>
                 <Row sx={{ height: '95%', width: '100%' }}>
-                    {lecture && <Column sx={{ width: '100%' }}>
+                    {lecture && !isLoading ? <Column sx={{ width: '100%' }}>
                         <Column sx={{ height: '30%' }}>
                             <Typography variant='h4'>{lecture?.name}</Typography>
                             <Typography variant='h5'>{`${lecture?.lecturer.firstName} ${lecture?.lecturer.lastName}`}</Typography>
@@ -48,7 +48,7 @@ const Subscribe = () => {
                             <Typography variant='h5'>{`Total to pay: ${lecture?.cost}$`}</Typography>
                             <PaypalButtons amount={`${lecture?.cost}`} handleSubscribe={handleSubscribe} />
                         </Column>
-                    </Column>}
+                    </Column> : isLoading ? <CenteredColumn flex={1}><CircularProgress /></CenteredColumn> : <></>}
                 </Row>
                 <CardActions sx={{ height: '5%', justifyContent: 'flex-end' }}>
                     <Button sx={{ height: '25px' }} variant='contained' color='secondary' onClick={() => navigate(`../lectures/${id}`)}>

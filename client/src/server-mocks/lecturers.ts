@@ -2,7 +2,7 @@ import { Person } from '../../../common/types';
 
 export default [
     {
-        id: '1',
+        _id: '1',
         firstName: 'Haim',
         lastName: 'Moshe',
         aboutInformation: 'I am a tech lead in the best company in Israel, working with master JS mr. mor cohen the architect.',
@@ -14,7 +14,7 @@ export default [
         ]
     },
     {
-        id: '2',
+        _id: '2',
         firstName: 'Tal',
         lastName: 'Mikey',
         aboutInformation: 'I am a tech lead in the best company in Israel, working with master JS mr. mor cohen the architect.',
