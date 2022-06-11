@@ -24,7 +24,7 @@ export const LectureCard: FC<LectureCardProps> = ({ lecture, setIsOpen, setLectu
     }
 
     return (
-        <Card sx={{ cursor: 'pointer', height: '85%' }} onClick={() => navigate(`../lectures/${lecture._id}`)}>
+        <Card sx={{ cursor: 'pointer', height: '375px' }} onClick={() => navigate(`../lectures/${lecture._id}`)}>
             <CardHeader
                 title={lecture.name}
                 subheader={`By: ${lecture.lecturer.firstName} ${lecture.lecturer.lastName}`}
@@ -41,9 +41,9 @@ export const LectureCard: FC<LectureCardProps> = ({ lecture, setIsOpen, setLectu
                     </Row>
                 }
             />
-            <CardMedia component={'img'} sx={{ height: '40%' }} src={lecture.image.url} />
+            <CardMedia component={'img'} sx={{ height: '50%' }} src={lecture.image.url} />
             <CardContent>
-                <Typography variant={'body2'} color={'text.secondary'}>
+                <Typography sx={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }} variant={'body2'} color={'text.secondary'}>
                     {lecture.information}
                 </Typography>
                 <Row>

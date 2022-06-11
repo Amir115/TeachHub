@@ -58,7 +58,7 @@ const TeachHub = () => {
 
       <Column sx={{ p: 3, flex: 1, justifyContent: "space-between", overflow: 'auto' }}>
         <Column sx={{ flex: 1, maxHeight: 1 }}><Outlet /></Column>
-        <Typography sx={{ color: 'text.disabled' }} variant="body2">
+        <Typography sx={{ color: 'text.disabled', position: 'fixed', bottom: '20px' }} variant="body2">
           2022 © TeachHub
         </Typography>
       </Column>

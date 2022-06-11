@@ -1,8 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, CircularProgress, Stack, Typography } from '@mui/material';
-import { FacebookShareButton, FacebookIcon } from 'react-share';
 
-import { CenteredRow, Row } from '../../theme/layout';
+import { CenteredRow } from '../../theme/layout';
 import { LectureDetails } from "../../components/LectureDetails";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -28,7 +27,6 @@ const LecturePage = () => {
     const subscribeButton = <Button variant='contained' color='secondary' onClick={() => navigate(`subscribe`)}>Subscribe
       Now</Button>;
     const author = lecture && `${lecture.lecturer.firstName} ${lecture.lecturer.lastName}`;
-    const facebookQuote = `check out "${lecture?.name}" lecture by ${author}`;
 
     if (isLoading) {
       return <CenteredRow flex={1}><CircularProgress /></CenteredRow>
@@ -36,14 +34,6 @@ const LecturePage = () => {
 
     return lecture ?
       <Stack spacing={1}>
-        <Row justifyContent={'end'}>
-          <FacebookShareButton url={window.location.href} quote={facebookQuote}>
-            <Row>
-              <FacebookIcon size={24} round />
-              <Typography>Share</Typography>
-            </Row>
-          </FacebookShareButton>
-        </Row>
         <Typography variant='h4'>{lecture.name}</Typography>
         <Typography variant='h6' onClick={() => navigate(`../../lecturer/${lecture.lecturer._id}`)}
                     sx={{ textDecoration: 'underline', cursor: 'pointer' }}>

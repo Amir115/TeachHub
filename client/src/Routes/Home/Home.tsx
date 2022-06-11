@@ -25,6 +25,7 @@ interface Tag {
 const Home = () => {
     const [isLoadingLectures, setIsLoadingLectures] = useState(false);
     const [lectures, setLectures] = useState<Lecture[]>([]);
+    const [filteredLectures, setFilteredLectures] = useState<Lecture[]>([]);
     const [subscribedLectures, setSubscribedLectures] = useState<Lecture[]>([]);
     const [searchKey, setSearchKey] = useState('');
     const [tags, setTags] = useState<Tag[]>([]);
@@ -83,6 +84,8 @@ const Home = () => {
             axios.get('/api/user/lectures').then(({ data: subscribedLecturesIds }) => {
                 setSubscribedLectures(subscribedLecturesIds.map((id: string) => lectures?.find(x => x._id === id)).filter((x: any): x is Lecture => Boolean(x)) || []);
             });
+
+            setFilteredLectures(lectures);
         }
     }, [lectures]);
 
@@ -97,7 +100,7 @@ const Home = () => {
             lecturesByTags.filter(({ name, lecturer: { firstName, lastName }, topic }) =>
                 [name, `${firstName} ${lastName}`, topic].some(x => x.toLowerCase().includes(searchKey.toLowerCase()))) : lecturesByTags;
 
-        setLectures(filteredLectures);
+        setFilteredLectures(filteredLectures);
     }, [searchKey, tags]);
 
     return (
@@ -179,7 +182,7 @@ const Home = () => {
                             </Row>
                         </Stack>
                         <Grid container spacing={2} sx={{ paddingY: 4, width: '100%' }}>
-                            {lectures?.map(lecture => (
+                            {filteredLectures?.map(lecture => (
                                 <Grid key={lecture._id} item xs={3}>
                                     <LectureCard lecture={lecture} />
                                 </Grid>
