@@ -53,6 +53,7 @@ export const updateInterests: RequestHandler = async (req, res, next) => {
 
     await model.save();
 
+    res.sendStatus(200);
   } catch (e) {
     return next(e);
   }

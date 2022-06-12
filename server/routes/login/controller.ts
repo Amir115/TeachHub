@@ -1,3 +1,4 @@
+import { Types } from 'mongoose'
 import { RequestHandler } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import omit from 'lodash/omit';
@@ -14,7 +15,7 @@ export const signup: RequestHandler = async (req, res, next) => {
   try {
     const {username, firstName, lastName, password, birthDate} = req.body
     const personData: PersonType = {
-        _id: uuidv4(),
+        _id: (new Types.ObjectId()).toString(),
         firstName,
         lastName,
         birthDate,
