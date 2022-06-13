@@ -41,11 +41,11 @@ export default (server: Server, mongoSessionMiddleware: RequestHandler) => {
         };
 
         // Tell other users about me
-        namespace.emit(USER_JOIN_EVENT, userSocket.id, user.id);
+        namespace.emit(USER_JOIN_EVENT, userSocket.id, user._id);
 
         // Tell me about the others
         namespace.sockets.forEach((otherSocket: AuthenticatedSocket) => {
-            userSocket.emit(USER_JOIN_EVENT, otherSocket.id, getUser(otherSocket))
+            userSocket.emit(USER_JOIN_EVENT, otherSocket.id, getUser(otherSocket)?._id)
         })
 
         // Let me know about this room's messages
